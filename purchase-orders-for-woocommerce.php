@@ -1,19 +1,19 @@
 <?php
-/**
- * Plugin Name: Purchase Orders for WooCommerce
- * Plugin URI: https://mcgregormedia.co.uk
- * Description: Adds a Purchase Order payment method to WooCommerce.
- * Author: McGregor Media Web Design
- * Author URI: https://mcgregormedia.co.uk
- * Version: 1.1.0
- * Text Domain: pofwc
- * WC requires at least: 3.0.0
- * WC tested up to: 3.2.0
- * License: GNU General Public License v2.0
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- *
- * This gateway forks the WooCommerce core "Cheque" payment gateway to create another offline payment method.
- */
+/*
+Plugin Name: Purchase Orders for WooCommerce
+Plugin URI: https://mcgregormedia.co.uk
+Description: Adds a Purchase Order payment method to WooCommerce.
+Author: McGregor Media Web Design
+Author URI: https://mcgregormedia.co.uk
+Version: 1.2.0
+Text Domain: pofwc
+WC requires at least: 3.0.0
+WC tested up to: 3.3.0
+License: GNU General Public License v2.0
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+This gateway forks the WooCommerce core "Cheque" payment gateway to create another offline payment method.
+*/
 
 
 
@@ -45,7 +45,7 @@ add_action( 'plugins_loaded', 'pofwc_load_textdomain' );
 
 
 /**
- * Adds option on activation to check if newly activated. If true, runs WooCOmmerce check after register_activation_hook redirection
+ * Adds option on activation to check if newly activated. If true, runs WooCommerce check after register_activation_hook redirection
  * 
  * @since 1.2.0					Added function
  */

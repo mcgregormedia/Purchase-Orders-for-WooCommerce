@@ -63,6 +63,8 @@ function pofwc_purchase_order_gateway_init() {
 				// Display meta data
 				add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'pofwc_display_purchase_order_meta' ), 10, 1 );
 				
+				add_filter( 'wc_stripe_validate_checkout_required_fields', array( $this, 'pofwc_stripe_validate_checkout_unset_gateways_required_fields' ) );
+				
 			}
 			
 			
@@ -330,6 +332,52 @@ function pofwc_purchase_order_gateway_init() {
 				}
 				
 			}
+			
+			
+			
+			
+			/**
+			 * Bypasses the Stripe plugin's validation of fields
+			 * 
+			 * @param array $required_fields  		The required fields
+			 *
+			 * @since 1.2.0
+			 */
+
+			function pofwc_stripe_validate_checkout_unset_gateways_required_fields( $required_fields ){
+				
+				if( isset( $required_fields['purchase-order-number'] ) ){
+					unset( $required_fields['purchase-order-number'] );
+				}
+				if( isset( $required_fields['purchase-order-company-name'] ) ){
+					unset( $required_fields['purchase-order-company-name'] );
+				}
+				if( isset( $required_fields['purchase-order-address1'] ) ){
+					unset( $required_fields['purchase-order-address1'] );
+				}
+				if( isset( $required_fields['purchase-order-address2'] ) ){
+					unset( $required_fields['purchase-order-address2'] );
+				}
+				if( isset( $required_fields['purchase-order-address3'] ) ){
+					unset( $required_fields['purchase-order-address3'] );
+				}
+				if( isset( $required_fields['purchase-order-town'] ) ){
+					unset( $required_fields['purchase-order-town'] );
+				}
+				if( isset( $required_fields['purchase-order-county'] ) ){
+					unset( $required_fields['purchase-order-county'] );
+				}
+				if( isset( $required_fields['purchase-order-postcode'] ) ){
+					unset( $required_fields['purchase-order-postcode'] );
+				}
+				if( isset( $required_fields['purchase-order-query-name'] ) ){
+					unset( $required_fields['purchase-order-query-name'] );
+				}
+				if( isset( $required_fields['purchase-order-query-email'] ) ){
+					unset( $required_fields['purchase-order-query-email'] );
+				}
+				
+			}			
 			
 			
 			

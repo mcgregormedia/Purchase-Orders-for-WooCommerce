@@ -19,6 +19,10 @@ Select if the order is to be On Hold or Processing after checkout. The gateway w
 
 This plugin is compatible with WooCommerce 3.x versions.
 
+= GDPR information =
+
+This plugin will gather and store a company's name and address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the legal basis for processing this data is contractual obligation. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (but not if the order is trashed).
+
 == Screenshots ==
 1. The admin settings for the gateway.
 2. Checkout page on Storefront theme.
@@ -27,6 +31,17 @@ This plugin is compatible with WooCommerce 3.x versions.
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.2.0 27-04-2018
+FIXED: Stripe plugin validation conflict
+ADDED: check if WooCommerce is installed upon activation
+ADDED: GDPR notice in ReadMe
+REMOVED: Stripe plugin conflict warning
+
+1.1.1 08-02-2018
+ADDED: Stripe plugin conflict warning
+UPDATED: WC requires at least and WC tested up to tags for WooCommerce 3.3.x
+
+
 1.1.0 12-10-2017
 ADDED: WC requires at least and WC tested up to tags for WooCommerce 3.2+
 UPDATED: bumped WP tested up to tag
