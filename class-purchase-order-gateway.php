@@ -49,7 +49,7 @@ function pofwc_purchase_order_gateway_init() {
 			  
 				// Define user set variables
 				$this->title        = $this->get_option( 'title' );
-				$this->status = $this->get_option( 'status' );
+				$this->status 		= $this->get_option( 'status' );
 				$this->description  = $this->get_option( 'description' );
 				$this->instructions = $this->get_option( 'instructions', $this->description );
 			  
@@ -145,7 +145,7 @@ function pofwc_purchase_order_gateway_init() {
 				
 				if ( $this->instructions ) {
 					
-					echo wpautop( wptexturize( $this->instructions ) );
+					echo wp_kses_post( wpautop( wptexturize( $this->instructions ) ) );
 					
 				}
 				
@@ -168,7 +168,7 @@ function pofwc_purchase_order_gateway_init() {
 			
 			public function pofwc_email_instructions( $order, $sent_to_admin, $plain_text = false ) {
 				
-				if ( $this->instructions && ! $sent_to_admin && $this->id === $order->payment_method && $order->has_status( $this->status ) ) {
+				if ( $this->instructions && ! $sent_to_admin && $this->id === $order->get_payment_method() && $order->has_status( $this->status ) ) {
 					
 					echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
 					
@@ -194,9 +194,19 @@ function pofwc_purchase_order_gateway_init() {
 		
 				$order = wc_get_order( $order_id );
 				
-				$order->update_status( $this->status, 'Awaiting invoice payment from purchase order.' );
+				// Check if order total is zero
+				if ( $order->get_total() > 0 ) {
+					
+					$order->update_status( $this->status, 'Awaiting invoice payment from purchase order.' );
 				
-				$order->reduce_order_stock();
+				} else {
+					
+					$order->payment_complete();
+					
+				}
+				
+				// Reduce stock levels.
+				wc_reduce_stock_levels( $order_id );
 				
 				if( isset( $_POST['purchase-order-number'] ) && trim( $_POST['purchase-order-number'] )!=''){
 					
@@ -211,8 +221,10 @@ function pofwc_purchase_order_gateway_init() {
 					
 				}
 				
+				// Remove cart.
 				WC()->cart->empty_cart();
 				
+				// Return thankyou redirect.
 				return array(
 					'result' 	=> 'success',
 					'redirect'	=> $this->get_return_url( $order )

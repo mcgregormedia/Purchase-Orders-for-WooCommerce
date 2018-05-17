@@ -3,7 +3,7 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 7.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,9 @@ This plugin will gather and store a company's name and address. This could also 
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.3.0 17-05-2018
+ADDED: Compatibility with WooCommerce 3.4+ and WordPress 5.0+
+
 1.2.0 27-04-2018
 FIXED: Stripe plugin validation conflict
 ADDED: check if WooCommerce is installed upon activation
