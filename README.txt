@@ -31,6 +31,14 @@ This plugin will gather and store a company's name and address. This could also 
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.4.0 18-05-2018
+FIXED: Notice that payment_method was called incorrectly
+ADDED: Gateway description on checkout page
+ADDED: Invoice email field
+ADDED: various field settings
+ADDED: en_GB translation, plugin now defaults to en_US
+REMOVED: 'Where should we send the invoice to?' text from checkout page as not really required
+
 1.3.0 17-05-2018
 ADDED: Compatibility with WooCommerce 3.4+ and WordPress 5.0+
 

@@ -34,6 +34,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @access public
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added field settings
 			 */
 			public function __construct() {
 		  
@@ -52,6 +53,12 @@ function pofwc_purchase_order_gateway_init() {
 				$this->status 		= $this->get_option( 'status' );
 				$this->description  = $this->get_option( 'description' );
 				$this->instructions = $this->get_option( 'instructions', $this->description );
+				$this->po_number_label = $this->get_option( 'po_number_label' );
+				$this->company_name_required = $this->get_option( 'company_name_required' );
+				$this->address_1_required = $this->get_option( 'address_1_required' );
+				$this->town_required = $this->get_option( 'town_required' );
+				$this->postcode_required = $this->get_option( 'postcode_required' );
+				$this->email_required = $this->get_option( 'email_required' );
 			  
 				// Actions
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -78,6 +85,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @return string 		The formatted HTML
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added field settings
 			 */
 			
 			public function init_form_fields() {
@@ -124,6 +132,49 @@ function pofwc_purchase_order_gateway_init() {
 						'description' => __( 'Instructions that will be added to the thank you page and emails.', 'pofwc' ),
 						'default'     => 'We will send our invoice to the address supplied.',
 						'desc_tip'    => true,
+					),
+					
+					'po_number_label' => array(
+						'title'       => __( 'Purchase order number label', 'pofwc' ),
+						'type'        => 'text',
+						'description' => __( 'This controls the label of the purchase order number field the customer sees during checkout.', 'pofwc' ),
+						'default'     => __( 'Purchase order number', 'pofwc' ),
+						'desc_tip'    => true,
+					),				
+					
+					'company_name_required' => array(
+						'title'   => __( 'Company name required?', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is company name a required field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'address_1_required' => array(
+						'title'   => __( 'Address line 1 required?', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is address line 1 a required field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'town_required' => array(
+						'title'   => __( 'City required?', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is city a required field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'postcode_required' => array(
+						'title'   => __( 'Zip required?', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is zip a required field?', 'pofwc' ),
+						'default' => 'yes'
+					),					
+					
+					'email_required' => array(
+						'title'   => __( 'Email required?', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is email a required field?', 'pofwc' ),
+						'default' => 'yes'
 					),
 				) );
 			}
@@ -188,6 +239,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @return array			Redirects to thankyou page with relevant data
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added _purchase_order_email
 			 */
 			
 			public function process_payment( $order_id ) {
@@ -218,6 +270,7 @@ function pofwc_purchase_order_gateway_init() {
 					update_post_meta( $order_id, '_purchase_order_town', sanitize_text_field( $_POST['purchase-order-town'] ) );
 					update_post_meta( $order_id, '_purchase_order_county', sanitize_text_field( $_POST['purchase-order-county'] ) );
 					update_post_meta( $order_id, '_purchase_order_postcode', sanitize_text_field( $_POST['purchase-order-postcode'] ) );
+					update_post_meta( $order_id, '_purchase_order_email', sanitize_text_field( $_POST['purchase-order-email'] ) );
 					
 				}
 				
@@ -243,25 +296,41 @@ function pofwc_purchase_order_gateway_init() {
 			 * @return string 		The formatted HTML
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added description, field settings
 			 */
 			
 			public function payment_fields(){
+				
+				$po_number_label = ( $this->po_number_label !='' )? $this->po_number_label : 'Purchase order number'; 
+				$company_name_required_text = ( $this->company_name_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$company_name_required_class = ( $this->company_name_required == 'yes' ) ? 'validate-required' : ''; 
+				$address_1_required_text = ( $this->address_1_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$address_1_required_class = ( $this->address_1_required == 'yes' ) ? 'validate-required' : ''; 
+				$town_required_text = ( $this->town_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$town_required_class = ( $this->town_required == 'yes' ) ? 'validate-required' : ''; 
+				$postcode_required_text = ( $this->postcode_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$postcode_required_class = ( $this->postcode_required == 'yes' ) ? 'validate-required' : ''; 
+				$email_required_text = ( $this->email_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$email_required_class = ( $this->email_required == 'yes' ) ? 'validate-required' : '';
+				
 				?>
 				
-				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-number">Purchase order number<span class="required">*</span></label>
-					<input type="text" id="purchase-order-number" name="purchase-order-number" class="input-text" placeholder="Purchase order number">
+				<p class="form-row form-row-wide">
+					 <?php echo $this->description; ?>
 				</p>
 				
-				<p class="form-row form-row-wide">Where should we send the invoice to?</p>
-				
 				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-company-name">Company name<span class="required">*</span></label>
+					<label for="purchase-order-number"><?php echo esc_html( $po_number_label ); ?><span class="required">*</span></label>
+					<input type="text" id="purchase-order-number" name="purchase-order-number" class="input-text" placeholder="<?php echo esc_html( $po_number_label ); ?>">
+				</p>
+
+				<p class="form-row form-row-wide <?php echo $company_name_required_class; ?>">
+					<label for="purchase-order-company-name">Company name<?php echo $company_name_required_text; ?></label>
 					<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice company name">
 				</p>
 				
-				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-address1">Address line 1<span class="required">*</span></label>
+				<p class="form-row form-row-wide <?php echo $address_1_required_class; ?>">
+					<label for="purchase-order-address1">Address line 1<?php echo $address_1_required_text; ?></label>
 					<input type="text" id="purchase-order-address1" name="purchase-order-address1" class="input-text" placeholder="Invoice address line 1">
 				</p>
 				
@@ -275,19 +344,24 @@ function pofwc_purchase_order_gateway_init() {
 					<input type="text" id="purchase-order-address3" name="purchase-order-address3" class="input-text" placeholder="Invoice address line 3">
 				</p>
 				
-				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-town">Town<span class="required">*</span></label>
-					<input type="text" id="purchase-order-town" name="purchase-order-town" class="input-text" placeholder="Invoice town">
+				<p class="form-row form-row-wide <?php echo $town_required_class; ?>">
+					<label for="purchase-order-town"><?php _e( 'City', 'pofwc' ); ?><?php echo $town_required_text; ?></label>
+					<input type="text" id="purchase-order-town" name="purchase-order-town" class="input-text" placeholder="<?php _e( 'Invoice city', 'pofwc' ); ?>">
 				</p>
 				
 				<p class="form-row form-row-wide">
-					<label for="purchase-order-county">County</label>
-					<input type="text" id="purchase-order-county" name="purchase-order-county" class="input-text" placeholder="Invoice county">
+					<label for="purchase-order-county"><?php _e( 'State', 'pofwc' ); ?></label>
+					<input type="text" id="purchase-order-county" name="purchase-order-county" class="input-text" placeholder="<?php _e( 'Invoice state', 'pofwc' ); ?>">
 				</p>
 				
-				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-postcode">Postcode<span class="required">*</span></label>
-					<input type="text" id="purchase-order-postcode" name="purchase-order-postcode" class="input-text" placeholder="Invoice postcode">
+				<p class="form-row form-row-wide <?php echo $postcode_required_class; ?>">
+					<label for="purchase-order-postcode"><?php _e( 'Zip', 'pofwc' ); ?><?php echo $postcode_required_text; ?></label>
+					<input type="text" id="purchase-order-postcode" name="purchase-order-postcode" class="input-text" placeholder="<?php _e( 'Invoice zip', 'pofwc' ); ?>">
+				</p>
+				
+				<p class="form-row form-row-wide <?php echo $email_required_class; ?>">
+					<label for="purchase-order-email">Email<?php echo $email_required_text; ?></label>
+					<input type="email" id="purchase-order-email" name="purchase-order-email" class="input-text" placeholder="Invoice email">
 				</p>
 				
 				<?php
@@ -301,9 +375,10 @@ function pofwc_purchase_order_gateway_init() {
 			 *
 			 * @access public
 			 * 
-			 * @return mixed		boolean or formatted HTML string
+			 * @return mixed		Boolean or formatted HTML string
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added conditional for field settings
 			 */
 			
 			public function validate_fields() {
@@ -311,31 +386,43 @@ function pofwc_purchase_order_gateway_init() {
 				// Check if required fields are set, if not add an error
 				if ( ! $_POST['purchase-order-number'] ){
 					
-					wc_add_notice( __( 'Please enter a purchase order number.' ), 'error' );
+					wc_add_notice( __( 'Please enter a purchase order number.', 'pofwc' ), 'error' );
 					
 				}
 				
-				if ( ! $_POST['purchase-order-company-name'] ){
+				if ( $this->company_name_required == 'yes' && ! $_POST['purchase-order-company-name'] ){
 					
-					wc_add_notice( __( 'Please complete the address to send the invoice to - company name is missing.' ), 'error' );
-					
-				}
-				
-				if ( ! $_POST['purchase-order-address1'] ){
-					
-					wc_add_notice( __( 'Please complete the address to send the invoice to - address line 1 is missing.' ), 'error' );
+					wc_add_notice( __( 'Please complete the address to send the invoice to - company name is missing.', 'pofwc' ), 'error' );
 					
 				}
 				
-				if ( ! $_POST['purchase-order-town'] ){
+				if ( $this->address_1_required == 'yes' && ! $_POST['purchase-order-address1'] ){
 					
-					wc_add_notice( __( 'Please complete the address to send the invoice to - town is missing.' ), 'error' );
+					wc_add_notice( __( 'Please complete the address to send the invoice to - address line 1 is missing.', 'pofwc' ), 'error' );
 					
 				}
 				
-				if ( ! $_POST['purchase-order-postcode'] ){
+				if ( $this->town_required == 'yes' && ! $_POST['purchase-order-town'] ){
 					
-					wc_add_notice( __( 'Please complete the address to send the invoice to - postcode is missing.' ), 'error' );
+					wc_add_notice( __( 'Please complete the address to send the invoice to - city is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
+				if ( $this->postcode_required == 'yes' && ! $_POST['purchase-order-postcode'] ){
+					
+					wc_add_notice( __( 'Please complete the address to send the invoice to - zip is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
+				if ( $this->email_required == 'yes' && ! $_POST['purchase-order-email'] ){
+					
+					wc_add_notice( __( 'Please complete the address to send the invoice to - email is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
+				if ( $this->email_required == 'yes' && ! is_email( $_POST['purchase-order-email'] ) ){
+					
+					wc_add_notice( __( 'Please check the invoice email address supplied is a valid email address.', 'pofwc' ), 'error' );
 					
 				}
 				
@@ -354,6 +441,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @param array $required_fields  		The required fields
 			 *
 			 * @since 1.2.0
+			 * @since 1.4.0							Added purchase-order-email
 			 */
 
 			function pofwc_stripe_validate_checkout_unset_gateways_required_fields( $required_fields ){
@@ -382,11 +470,8 @@ function pofwc_purchase_order_gateway_init() {
 				if( isset( $required_fields['purchase-order-postcode'] ) ){
 					unset( $required_fields['purchase-order-postcode'] );
 				}
-				if( isset( $required_fields['purchase-order-query-name'] ) ){
-					unset( $required_fields['purchase-order-query-name'] );
-				}
-				if( isset( $required_fields['purchase-order-query-email'] ) ){
-					unset( $required_fields['purchase-order-query-email'] );
+				if( isset( $required_fields['purchase-order-email'] ) ){
+					unset( $required_fields['purchase-order-email'] );
 				}
 				
 			}			
@@ -402,6 +487,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @return string 		The formatted HTML
 			 *
 			 * @since 1.0.0
+			 * @since 1.4.0			Added _purchase_order_email
 			 */
 			
 			function pofwc_display_purchase_order_meta(){
@@ -413,14 +499,15 @@ function pofwc_purchase_order_gateway_init() {
 					echo '<h3>Purchase order information</h3>';
 					echo '<p>';
 						echo '<strong>Purchase order number:</strong> ' . get_post_meta( $order_id, '_purchase_order_number', true ) . '<br>';			
-						echo '<strong>Invoice address:</strong> <br>';
+						echo '<strong>Invoice details:</strong> <br>';
 						echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
 						echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
 						echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
 						echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
 						echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
 						echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
-						echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';					
+						echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';	
+						echo ( get_post_meta( $order_id, '_purchase_order_email', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_email', true ) ) . '<br>' : '';					
 					echo '</p>';
 				
 				}

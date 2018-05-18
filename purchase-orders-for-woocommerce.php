@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function pofwc_load_textdomain() {
 	
-	load_plugin_textdomain( 'pofwc', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
+	load_plugin_textdomain( 'pofwc', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	
 }
 add_action( 'plugins_loaded', 'pofwc_load_textdomain' );
