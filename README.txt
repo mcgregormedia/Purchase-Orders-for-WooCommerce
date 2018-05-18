@@ -21,7 +21,7 @@ This plugin is compatible with WooCommerce 3.x versions.
 
 = GDPR information =
 
-This plugin will gather and store a company's name and address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the legal basis for processing this data is contractual obligation. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (but not if the order is trashed).
+This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (but not if the order is trashed).
 
 == Screenshots ==
 1. The admin settings for the gateway.
@@ -37,6 +37,7 @@ ADDED: Gateway description on checkout page
 ADDED: Invoice email field
 ADDED: various field settings
 ADDED: en_GB translation, plugin now defaults to en_US
+UPDATED: GDPR notice in readme to reflect the new email setting
 REMOVED: 'Where should we send the invoice to?' text from checkout page as not really required
 
 1.3.0 17-05-2018
