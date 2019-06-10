@@ -49,16 +49,27 @@ function pofwc_purchase_order_gateway_init() {
 				$this->init_settings();
 			  
 				// Define user set variables
-				$this->title        = $this->get_option( 'title' );
-				$this->status 		= $this->get_option( 'status' );
-				$this->description  = $this->get_option( 'description' );
-				$this->instructions = $this->get_option( 'instructions', $this->description );
-				$this->po_number_label = $this->get_option( 'po_number_label' );
-				$this->company_name_required = $this->get_option( 'company_name_required' );
-				$this->address_1_required = $this->get_option( 'address_1_required' );
-				$this->town_required = $this->get_option( 'town_required' );
-				$this->postcode_required = $this->get_option( 'postcode_required' );
-				$this->email_required = $this->get_option( 'email_required' );
+				$this->title        			= $this->get_option( 'title' );
+				$this->status 					= $this->get_option( 'status' );
+				$this->description  			= $this->get_option( 'description' );
+				$this->instructions 			= $this->get_option( 'instructions', $this->description );
+				$this->po_number_label 			= $this->get_option( 'po_number_label' );
+				$this->company_name_display 	= $this->get_option( 'company_name_display' );
+				$this->address_1_display 		= $this->get_option( 'address_1_display' );
+				$this->address_2_display 		= $this->get_option( 'address_2_display' );
+				$this->address_3_display 		= $this->get_option( 'address_3_display' );
+				$this->town_display 			= $this->get_option( 'town_display' );
+				$this->county_display 			= $this->get_option( 'county_display' );
+				$this->postcode_display 		= $this->get_option( 'postcode_display' );
+				$this->email_display 			= $this->get_option( 'email_display' );
+				$this->company_name_required 	= $this->get_option( 'company_name_required' );
+				$this->address_1_required 		= $this->get_option( 'address_1_required' );
+				$this->address_2_required 		= $this->get_option( 'address_2_required' );
+				$this->address_3_required 		= $this->get_option( 'address_3_required' );
+				$this->town_required 			= $this->get_option( 'town_required' );
+				$this->county_required 			= $this->get_option( 'county_required' );
+				$this->postcode_required 		= $this->get_option( 'postcode_required' );
+				$this->email_required 			= $this->get_option( 'email_required' );
 			  
 				// Actions
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -86,6 +97,7 @@ function pofwc_purchase_order_gateway_init() {
 			 *
 			 * @since 1.0.0
 			 * @since 1.4.0			Added field settings
+			 * @since 1.7.0			Added display and required options for fields
 			 */
 			
 			public function init_form_fields() {
@@ -142,38 +154,107 @@ function pofwc_purchase_order_gateway_init() {
 						'desc_tip'    => true,
 					),				
 					
-					'company_name_required' => array(
-						'title'   => __( 'Company name required?', 'pofwc' ),
+					'company_name_display' => array(
+						'title'   => __( 'Company name', 'pofwc' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Is company name a required field?', 'pofwc' ),
+						'label'   => __( 'Display company name field?', 'pofwc' ),
+						'default' => 'yes'
+					),				
+					
+					'company_name_required' => array(
+						'type'    => 'checkbox',
+						'label'   => __( 'Is company name a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'address_1_display' => array(
+						'title'   => __( 'Address line 1', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display address line 1 field?', 'pofwc' ),
 						'default' => 'yes'
 					),
 					
 					'address_1_required' => array(
-						'title'   => __( 'Address line 1 required?', 'pofwc' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Is address line 1 a required field?', 'pofwc' ),
+						'label'   => __( 'Is address line 1 a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'address_2_display' => array(
+						'title'   => __( 'Address line 2', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display address line 2 field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'address_2_required' => array(
+						'type'    => 'checkbox',
+						'label'   => __( 'Is address line 2 a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'no'
+					),
+					
+					'address_3_display' => array(
+						'title'   => __( 'Address line 3', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display address line 3 field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'address_3_required' => array(
+						'type'    => 'checkbox',
+						'label'   => __( 'Is address line 3 a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'no'
+					),
+					
+					'town_display' => array(
+						'title'   => __( 'City', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display city field?', 'pofwc' ),
 						'default' => 'yes'
 					),
 					
 					'town_required' => array(
-						'title'   => __( 'City required?', 'pofwc' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Is city a required field?', 'pofwc' ),
+						'label'   => __( 'Is city a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
 						'default' => 'yes'
 					),
 					
-					'postcode_required' => array(
-						'title'   => __( 'Zip required?', 'pofwc' ),
+					'county_display' => array(
+						'title'   => __( 'State', 'pofwc' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Is zip a required field?', 'pofwc' ),
+						'label'   => __( 'Display state field?', 'pofwc' ),
+						'default' => 'yes'
+					),
+					
+					'county_required' => array(
+						'type'    => 'checkbox',
+						'label'   => __( 'Is state a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'no'
+					),
+					
+					'postcode_display' => array(
+						'title'   => __( 'Zip', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display zip field?', 'pofwc' ),
+						'default' => 'yes'
+					),	
+					
+					'postcode_required' => array(
+						'type'    => 'checkbox',
+						'label'   => __( 'Is zip a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
+						'default' => 'yes'
+					),					
+					
+					'email_display' => array(
+						'title'   => __( 'Email', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Display email field?', 'pofwc' ),
 						'default' => 'yes'
 					),					
 					
 					'email_required' => array(
-						'title'   => __( 'Email required?', 'pofwc' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Is email a required field?', 'pofwc' ),
+						'label'   => __( 'Is email a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
 						'default' => 'yes'
 					),
 				) );
@@ -297,72 +378,135 @@ function pofwc_purchase_order_gateway_init() {
 			 *
 			 * @since 1.0.0
 			 * @since 1.4.0			Added description, field settings
+			 * @since 1.7.0			Added display and required options for fields
 			 */
 			
 			public function payment_fields(){
-				
-				$po_number_label = ( $this->po_number_label !='' )? $this->po_number_label : 'Purchase order number'; 
-				$company_name_required_text = ( $this->company_name_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
-				$company_name_required_class = ( $this->company_name_required == 'yes' ) ? 'validate-required' : ''; 
-				$address_1_required_text = ( $this->address_1_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
-				$address_1_required_class = ( $this->address_1_required == 'yes' ) ? 'validate-required' : ''; 
-				$town_required_text = ( $this->town_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
-				$town_required_class = ( $this->town_required == 'yes' ) ? 'validate-required' : ''; 
-				$postcode_required_text = ( $this->postcode_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
-				$postcode_required_class = ( $this->postcode_required == 'yes' ) ? 'validate-required' : ''; 
-				$email_required_text = ( $this->email_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
-				$email_required_class = ( $this->email_required == 'yes' ) ? 'validate-required' : '';
-				
+
 				?>
 				
 				<p class="form-row form-row-wide">
 					 <?php echo $this->description; ?>
 				</p>
 				
+				<?php $po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : 'Purchase order number'; ?>
+				
 				<p class="form-row form-row-wide validate-required">
 					<label for="purchase-order-number"><?php echo esc_html( $po_number_label ); ?><span class="required">*</span></label>
-					<input type="text" id="purchase-order-number" name="purchase-order-number" class="input-text" placeholder="<?php echo esc_html( $po_number_label ); ?>">
+					<input type="text" id="purchase-order-number" name="purchase-order-number" class="input-text" placeholder="<?php echo esc_attr( $po_number_label ); ?>">
 				</p>
-
-				<p class="form-row form-row-wide <?php echo $company_name_required_class; ?>">
-					<label for="purchase-order-company-name">Company name<?php echo $company_name_required_text; ?></label>
-					<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice company name">
-				</p>
+				 
+				<?php if( $this->company_name_display == 'yes' ){ ?>
+					
+					<?php
+					$company_name_required_text = ( $this->company_name_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$company_name_required_class = ( $this->company_name_required == 'yes' ) ? 'validate-required' : '';
+					?>
 				
-				<p class="form-row form-row-wide <?php echo $address_1_required_class; ?>">
-					<label for="purchase-order-address1">Address line 1<?php echo $address_1_required_text; ?></label>
-					<input type="text" id="purchase-order-address1" name="purchase-order-address1" class="input-text" placeholder="Invoice address line 1">
-				</p>
+					<p class="form-row form-row-wide <?php echo $company_name_required_class; ?>">
+						<label for="purchase-order-company-name">Company name<?php echo $company_name_required_text; ?></label>
+						<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice company name">
+					</p>
 				
-				<p class="form-row form-row-wide">
-					<label for="purchase-order-address2">Address line 2</label>
-					<input type="text" id="purchase-order-address2" name="purchase-order-address2" class="input-text" placeholder="Invoice address line 2">
-				</p>
+				<?php } ?>
 				
-				<p class="form-row form-row-wide">
-					<label for="purchase-order-address3">Address line 3</label>
-					<input type="text" id="purchase-order-address3" name="purchase-order-address3" class="input-text" placeholder="Invoice address line 3">
-				</p>
+				<?php if( $this->address_1_display == 'yes' ){ ?>
+					
+					<?php
+					$address_1_required_text = ( $this->address_1_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$address_1_required_class = ( $this->address_1_required == 'yes' ) ? 'validate-required' : '';
+					?>
 				
-				<p class="form-row form-row-wide <?php echo $town_required_class; ?>">
-					<label for="purchase-order-town"><?php _e( 'City', 'pofwc' ); ?><?php echo $town_required_text; ?></label>
-					<input type="text" id="purchase-order-town" name="purchase-order-town" class="input-text" placeholder="<?php _e( 'Invoice city', 'pofwc' ); ?>">
-				</p>
+					<p class="form-row form-row-wide <?php echo $address_1_required_class; ?>">
+						<label for="purchase-order-address1">Address line 1<?php echo $address_1_required_text; ?></label>
+						<input type="text" id="purchase-order-address1" name="purchase-order-address1" class="input-text" placeholder="Invoice address line 1">
+					</p>
 				
-				<p class="form-row form-row-wide">
-					<label for="purchase-order-county"><?php _e( 'State', 'pofwc' ); ?></label>
-					<input type="text" id="purchase-order-county" name="purchase-order-county" class="input-text" placeholder="<?php _e( 'Invoice state', 'pofwc' ); ?>">
-				</p>
+				<?php } ?>
 				
-				<p class="form-row form-row-wide <?php echo $postcode_required_class; ?>">
-					<label for="purchase-order-postcode"><?php _e( 'Zip', 'pofwc' ); ?><?php echo $postcode_required_text; ?></label>
-					<input type="text" id="purchase-order-postcode" name="purchase-order-postcode" class="input-text" placeholder="<?php _e( 'Invoice zip', 'pofwc' ); ?>">
-				</p>
+				<?php if( $this->address_2_display == 'yes' ){ ?>
+					
+					<?php
+					$address_2_required_text = ( $this->address_2_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$address_2_required_class = ( $this->address_2_required == 'yes' ) ? 'validate-required' : '';
+					?>
 				
-				<p class="form-row form-row-wide <?php echo $email_required_class; ?>">
-					<label for="purchase-order-email">Email<?php echo $email_required_text; ?></label>
-					<input type="email" id="purchase-order-email" name="purchase-order-email" class="input-text" placeholder="Invoice email">
-				</p>
+					<p class="form-row form-row-wide <?php echo $address_2_required_class; ?>">
+						<label for="purchase-order-address2">Address line 2<?php echo $address_2_required_text; ?></label>
+						<input type="text" id="purchase-order-address2" name="purchase-order-address2" class="input-text" placeholder="Invoice address line 2">
+					</p>
+				
+				<?php } ?>
+				
+				<?php if( $this->address_3_display == 'yes' ){ ?>
+					
+					<?php
+					$address_3_required_text = ( $this->address_3_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$address_3_required_class = ( $this->address_3_required == 'yes' ) ? 'validate-required' : '';
+					?>
+				
+					<p class="form-row form-row-wide <?php echo $address_3_required_class; ?>">
+						<label for="purchase-order-address3">Address line 3<?php echo $address_3_required_text; ?></label>
+						<input type="text" id="purchase-order-address3" name="purchase-order-address3" class="input-text" placeholder="Invoice address line 3">
+					</p>
+				
+				<?php } ?>
+				
+				<?php if( $this->town_display == 'yes' ){ ?>
+					
+					<?php
+					$town_required_text = ( $this->town_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$town_required_class = ( $this->town_required == 'yes' ) ? 'validate-required' : '';
+					?>
+				
+					<p class="form-row form-row-wide <?php echo $town_required_class; ?>">
+						<label for="purchase-order-town"><?php _e( 'City', 'pofwc' ); ?><?php echo $town_required_text; ?></label>
+						<input type="text" id="purchase-order-town" name="purchase-order-town" class="input-text" placeholder="<?php esc_attr_e( 'Invoice city', 'pofwc' ); ?>">
+					</p>
+				
+				<?php } ?>
+				
+				<?php if( $this->county_display == 'yes' ){ ?>
+					
+					<?php
+					$county_required_text = ( $this->county_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$county_required_class = ( $this->county_required == 'yes' ) ? 'validate-required' : '';
+					?>
+				
+					<p class="form-row form-row-wide <?php echo $county_required_class; ?>">
+						<label for="purchase-order-county"><?php _e( 'State', 'pofwc' ); ?></label>
+						<input type="text" id="purchase-order-county" name="purchase-order-county" class="input-text" placeholder="<?php esc_attr_e( 'Invoice state', 'pofwc' ); ?>">
+					</p>
+				
+				<?php } ?>
+				
+				<?php if( $this->postcode_display == 'yes' ){ ?>
+					
+					<?php
+					$postcode_required_text = ( $this->postcode_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$postcode_required_class = ( $this->postcode_required == 'yes' ) ? 'validate-required' : '';
+					?>
+				
+					<p class="form-row form-row-wide <?php echo $postcode_required_class; ?>">
+						<label for="purchase-order-postcode"><?php _e( 'Zip', 'pofwc' ); ?><?php echo $postcode_required_text; ?></label>
+						<input type="text" id="purchase-order-postcode" name="purchase-order-postcode" class="input-text" placeholder="<?php esc_attr_e( 'Invoice zip', 'pofwc' ); ?>">
+					</p>
+				
+				<?php } ?>
+				
+				<? if( $this->email_display == 'yes' ){ ?>
+					
+					<?php
+					$email_required_text = ( $this->email_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+					$email_required_class = ( $this->email_required == 'yes' ) ? 'validate-required' : '';
+					?>
+				
+					<p class="form-row form-row-wide <?php echo $email_required_class; ?>">
+						<label for="purchase-order-email">Email<?php echo $email_required_text; ?></label>
+						<input type="email" id="purchase-order-email" name="purchase-order-email" class="input-text" placeholder="Invoice email">
+					</p>
+				
+				<?php } ?>
 				
 				<?php
 			}
@@ -402,9 +546,27 @@ function pofwc_purchase_order_gateway_init() {
 					
 				}
 				
+				if ( $this->address_2_required == 'yes' && ! $_POST['purchase-order-address2'] ){
+					
+					wc_add_notice( __( 'Please complete the address to send the invoice to - address line 2 is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
+				if ( $this->address_3_required == 'yes' && ! $_POST['purchase-order-address3'] ){
+					
+					wc_add_notice( __( 'Please complete the address to send the invoice to - address line 3 is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
 				if ( $this->town_required == 'yes' && ! $_POST['purchase-order-town'] ){
 					
 					wc_add_notice( __( 'Please complete the address to send the invoice to - city is missing.', 'pofwc' ), 'error' );
+					
+				}
+				
+				if ( $this->county_required == 'yes' && ! $_POST['purchase-order-county'] ){
+					
+					wc_add_notice( __( 'Please complete the address to send the invoice to - state is missing.', 'pofwc' ), 'error' );
 					
 				}
 				
