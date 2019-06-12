@@ -494,7 +494,7 @@ function pofwc_purchase_order_gateway_init() {
 				
 				<?php } ?>
 				
-				<? if( $this->email_display == 'yes' ){ ?>
+				<?php if( $this->email_display == 'yes' ){ ?>
 					
 					<?php
 					$email_required_text = ( $this->email_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
