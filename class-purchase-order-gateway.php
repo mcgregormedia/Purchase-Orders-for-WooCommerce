@@ -81,6 +81,7 @@ function pofwc_purchase_order_gateway_init() {
 				// Display meta data
 				add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'pofwc_display_purchase_order_meta' ), 10, 1 );
 				
+				// Other
 				add_filter( 'wc_stripe_validate_checkout_required_fields', array( $this, 'pofwc_stripe_validate_checkout_unset_gateways_required_fields' ) );
 				
 			}
@@ -320,12 +321,28 @@ function pofwc_purchase_order_gateway_init() {
 			 * @return array			Redirects to thankyou page with relevant data
 			 *
 			 * @since 1.0.0
-			 * @since 1.4.0			Added _purchase_order_email
+			 * @since 1.4.0				Added _purchase_order_email
+			 * @since 1.7.4				Changed order of functionality to ensure order meta is available when order emails are sent
 			 */
 			
 			public function process_payment( $order_id ) {
 		
 				$order = wc_get_order( $order_id );
+				
+				// Add order meta data
+				if( isset( $_POST['purchase-order-number'] ) && trim( $_POST['purchase-order-number'] ) != ''){
+					
+					update_post_meta( $order_id, '_purchase_order_number', sanitize_text_field( $_POST['purchase-order-number'] ) );
+					update_post_meta( $order_id, '_purchase_order_company_name', sanitize_text_field( $_POST['purchase-order-company-name'] ) );
+					update_post_meta( $order_id, '_purchase_order_address1', sanitize_text_field( $_POST['purchase-order-address1'] ) );
+					update_post_meta( $order_id, '_purchase_order_address2', sanitize_text_field( $_POST['purchase-order-address2'] ) );
+					update_post_meta( $order_id, '_purchase_order_address3', sanitize_text_field( $_POST['purchase-order-address3'] ) );
+					update_post_meta( $order_id, '_purchase_order_town', sanitize_text_field( $_POST['purchase-order-town'] ) );
+					update_post_meta( $order_id, '_purchase_order_county', sanitize_text_field( $_POST['purchase-order-county'] ) );
+					update_post_meta( $order_id, '_purchase_order_postcode', sanitize_text_field( $_POST['purchase-order-postcode'] ) );
+					update_post_meta( $order_id, '_purchase_order_email', sanitize_text_field( $_POST['purchase-order-email'] ) );
+					
+				}
 				
 				// Check if order total is zero
 				if ( $order->get_total() > 0 ) {
@@ -340,20 +357,6 @@ function pofwc_purchase_order_gateway_init() {
 				
 				// Reduce stock levels.
 				wc_reduce_stock_levels( $order_id );
-				
-				if( isset( $_POST['purchase-order-number'] ) && trim( $_POST['purchase-order-number'] )!=''){
-					
-					update_post_meta( $order_id, '_purchase_order_number', sanitize_text_field( $_POST['purchase-order-number'] ) );
-					update_post_meta( $order_id, '_purchase_order_company_name', sanitize_text_field( $_POST['purchase-order-company-name'] ) );
-					update_post_meta( $order_id, '_purchase_order_address1', sanitize_text_field( $_POST['purchase-order-address1'] ) );
-					update_post_meta( $order_id, '_purchase_order_address2', sanitize_text_field( $_POST['purchase-order-address2'] ) );
-					update_post_meta( $order_id, '_purchase_order_address3', sanitize_text_field( $_POST['purchase-order-address3'] ) );
-					update_post_meta( $order_id, '_purchase_order_town', sanitize_text_field( $_POST['purchase-order-town'] ) );
-					update_post_meta( $order_id, '_purchase_order_county', sanitize_text_field( $_POST['purchase-order-county'] ) );
-					update_post_meta( $order_id, '_purchase_order_postcode', sanitize_text_field( $_POST['purchase-order-postcode'] ) );
-					update_post_meta( $order_id, '_purchase_order_email', sanitize_text_field( $_POST['purchase-order-email'] ) );
-					
-				}
 				
 				// Remove cart.
 				WC()->cart->empty_cart();
@@ -685,6 +688,68 @@ function pofwc_purchase_order_gateway_init() {
 		
 	
 	}
+	
+	
+	
+	
+	/**
+	 *  Displays the purchase order number on the order-received page
+	 *  
+	 *  @return string		The formatted HTML
+	 *  
+	 *  @since 1.7.4
+	 */
+	
+	function pofwc_add_po_number_to_order_received_page() {
+		
+		global $wp;
+		$order_id = absint( $wp->query_vars['order-received'] );
+		
+		$purchase_order_number = get_post_meta( $order_id, '_purchase_order_number', true );
+		
+		if ( '' != $purchase_order_number ) {
+			
+			echo '<p><strong>' . __( 'Purchase Order number', 'pofwc' ) . ':</strong> ' . $purchase_order_number;
+			
+		}
+		
+	}
+	add_action( 'woocommerce_thankyou', 'pofwc_add_po_number_to_order_received_page', 1 );
+	
+	
+	
+	
+	/**
+	 *  Adds the purchase order number to the order emails
+	 *  
+	 *  @param array $fields 				The order meta fields
+	 *  @param bool $sent_to_admin 			Send email to admin as well as customer?
+	 *  @param object $order 				The order object
+	 *  
+	 *  @return array $fields				The updated order meta fields
+	 *  
+	 *  @since 1.7.4
+	 */
+	
+	function pofwc_email_order_meta_fields( $fields, $sent_to_admin = true, $order ) {
+		
+		$purchase_order_number = get_post_meta( $order->get_id(), '_purchase_order_number', true );
+		
+		if ( '' != $purchase_order_number ) {
+			
+			$fields['purchase_order_number'] = array(
+			
+				'label' => __( 'Purchase Order number:', 'pofwc' ),
+				'value' => $purchase_order_number,
+				
+			);
+			
+		}
+		
+		return $fields;
+		
+	}
+	add_filter( 'woocommerce_email_order_meta_fields', 'pofwc_email_order_meta_fields', 10, 3 );
   
   
   
