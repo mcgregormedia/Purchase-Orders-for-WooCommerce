@@ -729,6 +729,7 @@ function pofwc_purchase_order_gateway_init() {
 	 *  @return array $fields				The updated order meta fields
 	 *  
 	 *  @since 1.7.4
+	 *  @since 1.7.5						Removed erroneous colon
 	 */
 	
 	function pofwc_email_order_meta_fields( $fields, $sent_to_admin = true, $order ) {
@@ -739,7 +740,7 @@ function pofwc_purchase_order_gateway_init() {
 			
 			$fields['purchase_order_number'] = array(
 			
-				'label' => __( 'Purchase Order number:', 'pofwc' ),
+				'label' => __( 'Purchase Order number', 'pofwc' ),
 				'value' => $purchase_order_number,
 				
 			);
