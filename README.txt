@@ -3,7 +3,7 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 7.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@ Select if the order is to be On Hold or Processing after checkout. The gateway w
 
 = WooCommerce compatibility =
 
-This plugin is compatible with WooCommerce 3.x versions.
+This plugin is compatible with WooCommerce 3.x and 4.x versions.
 
 = GDPR information =
 
@@ -31,6 +31,10 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.7.7 26-02-2020
+UPDATED: Tested up to WooCommerce 4.0
+UPDATED: Tested up to WordPress 5.4
+
 1.7.6 24-01-2020
 UPDATED: Tested up to WooCommerce 3.9
 
