@@ -15,6 +15,8 @@ Adds a Purchase Order payment method to WooCommerce.
 
 Select if the order is to be On Hold or Processing after checkout. The gateway will ask for the purchase order number - select whether to also display text boxes for name and address of the company to be invoiced, and whether any of those are required fields. Don't forget to mark a field as not required if it's not to be displayed or your customer will not be able to check out!
 
+The purchase order details will be displayed in the admin order screen, the customer order received screen and both admin and customer order emails.
+
 = WooCommerce compatibility =
 
 This plugin is compatible with WooCommerce 3.x and 4.x versions.
@@ -31,6 +33,11 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.7.9 13-07-2020
+UPDATED: Tested up to WooCommerce 4.3
+ADDED: Purchase order details now displayed on order-received page
+ADDED: Purchase order details now displayed on order emails
+
 1.7.8 03-06-2020
 UPDATED: Tested up to WooCommerce 4.2
 
