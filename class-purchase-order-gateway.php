@@ -54,6 +54,7 @@ function pofwc_purchase_order_gateway_init() {
 				$this->description  			= $this->get_option( 'description' );
 				$this->instructions 			= $this->get_option( 'instructions', $this->description );
 				$this->po_number_label 			= $this->get_option( 'po_number_label' );
+				$this->po_number_required		= $this->get_option( 'po_number_required' );
 				$this->company_name_display 	= $this->get_option( 'company_name_display' );
 				$this->address_1_display 		= $this->get_option( 'address_1_display' );
 				$this->address_2_display 		= $this->get_option( 'address_2_display' );
@@ -99,6 +100,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.0.0
 			 * @since 1.4.0			Added field settings
 			 * @since 1.7.0			Added display and required options for fields
+			 * @since 1.7.10		Added required option for purchase order number field
 			 */
 			
 			public function init_form_fields() {
@@ -154,6 +156,13 @@ function pofwc_purchase_order_gateway_init() {
 						'default'     => __( 'Purchase order number', 'pofwc' ),
 						'desc_tip'    => true,
 					),				
+					
+					'po_number_required' => array(
+						'title'   => __( 'Purchase order number', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Is purchase order number a required field?', 'pofwc' ),
+						'default' => 'yes'
+					),			
 					
 					'company_name_display' => array(
 						'title'   => __( 'Company name', 'pofwc' ),
@@ -382,6 +391,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.0.0
 			 * @since 1.4.0			Added description, field settings
 			 * @since 1.7.0			Added display and required options for fields
+			 * @since 1.7.10		Added required option for purchase order number field
 			 */
 			
 			public function payment_fields(){
@@ -392,10 +402,14 @@ function pofwc_purchase_order_gateway_init() {
 					 <?php echo $this->description; ?>
 				</p>
 				
-				<?php $po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : 'Purchase order number'; ?>
+				<?php
+				$po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : 'Purchase order number';
+				$po_number_required_text = ( $this->po_number_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
+				$po_number_required_class = ( $this->po_number_required == 'yes' ) ? 'validate-required' : '';
+				?>
 				
-				<p class="form-row form-row-wide validate-required">
-					<label for="purchase-order-number"><?php echo esc_html( $po_number_label ); ?><span class="required">*</span></label>
+				<p class="form-row form-row-wide  <?php echo $po_number_required_class; ?>">
+					<label for="purchase-order-number"><?php echo esc_html( $po_number_label ); ?><?php echo $po_number_required_text; ?></label>
 					<input type="text" id="purchase-order-number" name="purchase-order-number" class="input-text" placeholder="<?php echo esc_attr( $po_number_label ); ?>">
 				</p>
 				 
