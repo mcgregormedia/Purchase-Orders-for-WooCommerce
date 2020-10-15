@@ -33,6 +33,9 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.7.11 15-10-2020
+UPDATED: compatibility with WooCommerce 4.6.x
+
 1.7.10 08-08-2020
 ADDED: required option for purchase order number field
 UPDATED: Tested up to WordPress 5.5
