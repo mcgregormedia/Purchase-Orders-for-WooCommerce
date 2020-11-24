@@ -5,7 +5,7 @@ Plugin URI: https://mcgregormedia.co.uk
 Description: Adds a Purchase Order payment method to WooCommerce.
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk
-Version: 1.7.12
+Version: 1.7.13
 Text Domain: pofwc
 WC requires at least: 3.0
 WC tested up to: 4.7
