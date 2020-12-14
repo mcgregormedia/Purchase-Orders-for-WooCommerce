@@ -1,0 +1,305 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Purchase Orders for WooCommerce\n"
+"POT-Creation-Date: 2020-12-14 11:36+0000\n"
+"PO-Revision-Date: 2020-12-14 11:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_CA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: purchase-orders-for-woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: class-purchase-order-gateway.php:44
+msgid "Purchase Order"
+msgstr ""
+
+#: class-purchase-order-gateway.php:45
+msgid "Allows purchase order payments."
+msgstr ""
+
+#: class-purchase-order-gateway.php:111
+msgid "Enable/Disable"
+msgstr ""
+
+#: class-purchase-order-gateway.php:113
+msgid "Enable purchase order payment"
+msgstr ""
+
+#: class-purchase-order-gateway.php:118
+msgid "Checkout order status"
+msgstr ""
+
+#: class-purchase-order-gateway.php:124
+msgid "This controls the order status after checkout."
+msgstr ""
+
+#: class-purchase-order-gateway.php:129
+msgid "Title"
+msgstr ""
+
+#: class-purchase-order-gateway.php:131
+msgid ""
+"This controls the title for the payment method the customer sees during "
+"checkout."
+msgstr ""
+
+#: class-purchase-order-gateway.php:132
+msgid "Purchase order"
+msgstr ""
+
+#: class-purchase-order-gateway.php:137
+msgid "Description"
+msgstr ""
+
+#: class-purchase-order-gateway.php:139
+msgid "Payment method description that the customer will see on your checkout."
+msgstr ""
+
+#: class-purchase-order-gateway.php:140
+msgid "We will send our invoice to the address supplied."
+msgstr ""
+
+#: class-purchase-order-gateway.php:145
+msgid "Instructions"
+msgstr ""
+
+#: class-purchase-order-gateway.php:147
+msgid "Instructions that will be added to the thank you page and emails."
+msgstr ""
+
+#: class-purchase-order-gateway.php:153
+msgid "Purchase order number label"
+msgstr ""
+
+#: class-purchase-order-gateway.php:155
+msgid ""
+"This controls the label of the purchase order number field the customer sees "
+"during checkout."
+msgstr ""
+
+#: class-purchase-order-gateway.php:156 class-purchase-order-gateway.php:161
+msgid "Purchase order number"
+msgstr ""
+
+#: class-purchase-order-gateway.php:163
+msgid "Is purchase order number a required field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:168
+msgid "Company name"
+msgstr ""
+
+#: class-purchase-order-gateway.php:170
+msgid "Display company name field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:176
+msgid ""
+"Is company name a required field? Uncheck this if this field is not to be "
+"displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:181
+msgid "Address line 1"
+msgstr ""
+
+#: class-purchase-order-gateway.php:183
+msgid "Display address line 1 field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:189
+msgid ""
+"Is address line 1 a required field? Uncheck this if this field is not to be "
+"displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:194
+msgid "Address line 2"
+msgstr ""
+
+#: class-purchase-order-gateway.php:196
+msgid "Display address line 2 field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:202
+msgid ""
+"Is address line 2 a required field? Uncheck this if this field is not to be "
+"displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:207
+msgid "Address line 3"
+msgstr ""
+
+#: class-purchase-order-gateway.php:209
+msgid "Display address line 3 field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:215
+msgid ""
+"Is address line 3 a required field? Uncheck this if this field is not to be "
+"displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:220 class-purchase-order-gateway.php:480
+msgid "City"
+msgstr ""
+
+#: class-purchase-order-gateway.php:222
+msgid "Display city field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:228
+msgid ""
+"Is city a required field? Uncheck this if this field is not to be displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:233 class-purchase-order-gateway.php:494
+msgid "State"
+msgstr "Province"
+
+#: class-purchase-order-gateway.php:235
+msgid "Display state field?"
+msgstr "Display province field?"
+
+#: class-purchase-order-gateway.php:241
+msgid ""
+"Is state a required field? Uncheck this if this field is not to be displayed."
+msgstr ""
+"Is province a required field? Uncheck this if this field is not to be "
+"displayed."
+
+#: class-purchase-order-gateway.php:246 class-purchase-order-gateway.php:508
+msgid "Zip"
+msgstr "Postal Code"
+
+#: class-purchase-order-gateway.php:248
+msgid "Display zip field?"
+msgstr "Display postal code field?"
+
+#: class-purchase-order-gateway.php:254
+msgid ""
+"Is zip a required field? Uncheck this if this field is not to be displayed."
+msgstr ""
+"Is postal code a required field? Uncheck this if this field is not to be "
+"displayed."
+
+#: class-purchase-order-gateway.php:259
+msgid "Email"
+msgstr ""
+
+#: class-purchase-order-gateway.php:261
+msgid "Display email field?"
+msgstr ""
+
+#: class-purchase-order-gateway.php:267
+msgid ""
+"Is email a required field? Uncheck this if this field is not to be displayed."
+msgstr ""
+
+#: class-purchase-order-gateway.php:481
+msgid "Invoice city"
+msgstr ""
+
+#: class-purchase-order-gateway.php:495
+msgid "Invoice state"
+msgstr "Invoice province"
+
+#: class-purchase-order-gateway.php:509
+msgid "Invoice zip"
+msgstr "Invoice postal code"
+
+#: class-purchase-order-gateway.php:550
+msgid "Please enter a purchase order number."
+msgstr ""
+
+#: class-purchase-order-gateway.php:556
+msgid ""
+"Please complete the address to send the invoice to - company name is missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:562
+msgid ""
+"Please complete the address to send the invoice to - address line 1 is "
+"missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:568
+msgid ""
+"Please complete the address to send the invoice to - address line 2 is "
+"missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:574
+msgid ""
+"Please complete the address to send the invoice to - address line 3 is "
+"missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:580
+msgid "Please complete the address to send the invoice to - city is missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:586
+msgid "Please complete the address to send the invoice to - state is missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:592
+msgid "Please complete the address to send the invoice to - zip is missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:598
+msgid "Please complete the address to send the invoice to - email is missing."
+msgstr ""
+
+#: class-purchase-order-gateway.php:604
+msgid ""
+"Please check the invoice email address supplied is a valid email address."
+msgstr ""
+
+#: class-purchase-order-gateway.php:727 class-purchase-order-gateway.php:762
+msgid "Purchase Order number"
+msgstr ""
+
+#: class-purchase-order-gateway.php:773
+msgid "Invoice details"
+msgstr ""
+
+#: purchase-orders-for-woocommerce.php:107
+msgid ""
+"Purchase Orders for WooCommerce requires WooCommerce. Please install and "
+"activate WooCommerce."
+msgstr ""
+
+#: purchase-orders-for-woocommerce.php:146
+msgid "Settings"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Purchase Orders for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://mcgregormedia.co.uk"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Adds a Purchase Order payment method to WooCommerce."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "McGregor Media Web Design"
+msgstr ""
