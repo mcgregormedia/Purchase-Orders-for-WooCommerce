@@ -403,7 +403,7 @@ function pofwc_purchase_order_gateway_init() {
 				</p>
 				
 				<?php
-				$po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : 'Purchase order number';
+				$po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : __( 'Purchase order number', 'pofwc' );
 				$po_number_required_text = ( $this->po_number_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
 				$po_number_required_class = ( $this->po_number_required == 'yes' ) ? 'validate-required' : '';
 				?>
@@ -545,7 +545,7 @@ function pofwc_purchase_order_gateway_init() {
 			public function validate_fields() {
 				
 				// Check if required fields are set, if not add an error
-				if ( ! $_POST['purchase-order-number'] ){
+				if ( $this->po_number_required == 'yes' && ! $_POST['purchase-order-number'] ){
 					
 					wc_add_notice( __( 'Please enter a purchase order number.', 'pofwc' ), 'error' );
 					

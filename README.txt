@@ -33,6 +33,11 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.7.15 14-12-2020
+FIXED: Issue with customer not being able to checkout if PO number is empty but is not required
+UPDATED: English (UK) translation files
+TWEAK: Replaced POT file
+
 1.7.14 14-12-2020
 ADDED: English (Canada) translation
 
