@@ -392,6 +392,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0			Added description, field settings
 			 * @since 1.7.0			Added display and required options for fields
 			 * @since 1.7.10		Added required option for purchase order number field
+			 * @since 1.7.16		Fixed company name translation not working on the frontend
 			 */
 			
 			public function payment_fields(){
@@ -421,8 +422,8 @@ function pofwc_purchase_order_gateway_init() {
 					?>
 				
 					<p class="form-row form-row-wide <?php echo $company_name_required_class; ?>">
-						<label for="purchase-order-company-name">Company name<?php echo $company_name_required_text; ?></label>
-						<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice company name">
+						<label for="purchase-order-company-name"><?php _e( 'Company name', 'pofwc' ); ?><?php echo $company_name_required_text; ?></label>
+						<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice <?php _e( 'Company name', 'pofwc' ); ?>">
 					</p>
 				
 				<?php } ?>
