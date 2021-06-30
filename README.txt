@@ -21,6 +21,24 @@ The purchase order details will be displayed in the admin order screen, the cust
 
 This plugin is compatible with WooCommerce 3.x and 4.x versions.
 
+= Compatibility with other plugins =
+
+Some invoicing plugins require the meta keys of purchase order data to display this data on invoices. The meta keys used in this plugin are listed below:
+
+_purchase_order_number
+_purchase_order_company_name
+_purchase_order_address1
+_purchase_order_address2
+_purchase_order_address3
+_purchase_order_town
+_purchase_order_county
+_purchase_order_postcode
+_purchase_order_email
+
+= Order status =
+
+By popular demand, the Pending order status has been added to On Hold and Processing. Be aware that if you set the status to Pending, neither you nor the customer will receive an order email after checkut - this is standard WooCommerce functionality. Order emails will be sent when a status is changed from Pending to On Hold or Processing.
+
 = GDPR information =
 
 This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (but not if the order is trashed).
@@ -33,6 +51,12 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.8 30-06-2021
+ADDED: Order pending status
+UPDATED: Tested up to WordPress 5.8
+UPDATED: compatibility with WooCommerce 5.5
+UPDATED: ReadMe
+
 1.7.16 08-03-2021
 FIXED: Company name translation not working on the frontend
 UPDATED: Tested up to WordPress 5.7

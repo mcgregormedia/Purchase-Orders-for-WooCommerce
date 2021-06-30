@@ -119,6 +119,7 @@ function pofwc_purchase_order_gateway_init() {
 						'type'    => 'select',
 						'options' => array(
 							'on-hold' => 'On Hold',
+							'pending' => 'Pending',
 							'processing' => 'Processing'
 						 ),
 						'description' => __( 'This controls the order status after checkout.', 'pofwc' ),
