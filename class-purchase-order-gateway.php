@@ -302,18 +302,19 @@ function pofwc_purchase_order_gateway_init() {
 			 *
 			 * @access public
 			 *
-			 * @param WC_Order $order
-			 * @param bool $sent_to_admin
-			 * @param bool $plain_text
+			 * @param 			WC_Order $order
+			 * @param bool 		$sent_to_admin
+			 * @param bool 		$plain_text
 			 *
 			 * @since 1.0.0
+			 * @since 1.8.1		Added wp_kses_post() to output
 			 */
 			
 			public function pofwc_email_instructions( $order, $sent_to_admin, $plain_text = false ) {
 				
 				if ( $this->instructions && ! $sent_to_admin && $this->id === $order->get_payment_method() && $order->has_status( $this->status ) ) {
 					
-					echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
+					echo wp_kses_post( wpautop( wptexturize( $this->instructions ) ) . PHP_EOL );
 					
 				}
 				
