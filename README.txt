@@ -3,7 +3,7 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 5.8
+Tested up to: 6.1
 Requires PHP: 7.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,10 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.8.2 27-10-2022
+UPDATED: Tested up to WordPress 6.1
+UPDATED: compatibility with WooCommerce 7.1
+
 1.8.1 25-10-2021
 ADDED: Added wp_kses_post() to email output
 UPDATED: compatibility with WooCommerce 5.8
