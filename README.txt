@@ -13,13 +13,13 @@ Adds a Purchase Order payment method to WooCommerce.
 == Description ==
 Adds a Purchase Order payment method to WooCommerce.
 
-Select if the order is to be On Hold or Processing after checkout. The gateway will ask for the purchase order number - select whether to also display text boxes for name and address of the company to be invoiced, and whether any of those are required fields. Don't forget to mark a field as not required if it's not to be displayed or your customer will not be able to check out!
+Select if the order is to be Pending, On Hold or Processing after checkout. The gateway will ask for the purchase order number - select whether to also display text boxes for name and address of the company to be invoiced, and whether any of those are required fields. Don't forget to mark a field as not required if it's not to be displayed or your customer will not be able to check out!
 
 The purchase order details will be displayed in the admin order screen, the customer order received screen and both admin and customer order emails.
 
 = WooCommerce compatibility =
 
-This plugin is compatible with WooCommerce 3.x and 4.x versions.
+This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x and 7.x versions.
 
 = Compatibility with other plugins =
 
@@ -37,11 +37,11 @@ _purchase_order_email
 
 = Order status =
 
-By popular demand, the Pending order status has been added to On Hold and Processing. Be aware that if you set the status to Pending, neither you nor the customer will receive an order email after checkut - this is standard WooCommerce functionality. Order emails will be sent when a status is changed from Pending to On Hold or Processing.
+By popular demand, the Pending order status has been added to On Hold and Processing. Be aware that if you set the status to Pending, neither you nor the customer will receive an order email after checkout - this is standard WooCommerce functionality. Order emails will be sent when a status is changed from Pending to On Hold or Processing.
 
 = GDPR information =
 
-This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (but not if the order is trashed).
+This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (not trashed).
 
 == Screenshots ==
 1. The admin settings for the gateway.
@@ -51,6 +51,10 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.8.3 14-03-2023
+UPDATED: Tested up to WordPress 6.2
+UPDATED: compatibility with WooCommerce 7.5
+
 1.8.2 27-10-2022
 UPDATED: Tested up to WordPress 6.1
 UPDATED: compatibility with WooCommerce 7.1
