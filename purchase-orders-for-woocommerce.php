@@ -8,7 +8,7 @@ Author URI: https://mcgregormedia.co.uk
 Version: 1.8.3
 Text Domain: pofwc
 WC requires at least: 3.0
-WC tested up to: 7.1
+WC tested up to: 7.5
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

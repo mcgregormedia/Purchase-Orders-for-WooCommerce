@@ -3,7 +3,7 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
