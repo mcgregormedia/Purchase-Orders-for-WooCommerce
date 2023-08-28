@@ -71,16 +71,19 @@ function pofwc_purchase_order_gateway_init() {
 				$this->county_required 			= $this->get_option( 'county_required' );
 				$this->postcode_required 		= $this->get_option( 'postcode_required' );
 				$this->email_required 			= $this->get_option( 'email_required' );
+				$this->po_show_in_email 		= $this->get_option( 'po_show_in_email' );
 			  
 				// Actions
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 				add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'pofwc_thankyou' ) );
 			  
-				// Customer Emails
+				// Emails
 				add_action( 'woocommerce_email_after_order_table', array( $this, 'pofwc_email_instructions' ), 10, 3 );
+				add_filter( 'woocommerce_email_order_meta_fields', array( $this, 'pofwc_email_order_meta_fields' ), 10, 3 );
 				
 				// Display meta data
 				add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'pofwc_display_purchase_order_meta' ), 10, 1 );
+				add_action( 'woocommerce_thankyou', array( $this, 'pofwc_add_po_number_to_order_received_page' ), 1 );
 				
 				// Other
 				add_filter( 'wc_stripe_validate_checkout_required_fields', array( $this, 'pofwc_stripe_validate_checkout_unset_gateways_required_fields' ) );
@@ -101,6 +104,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0			Added field settings
 			 * @since 1.7.0			Added display and required options for fields
 			 * @since 1.7.10		Added required option for purchase order number field
+			 * @since 1.8.4			Added option to not display on order emails
 			 */
 			
 			public function init_form_fields() {
@@ -268,6 +272,16 @@ function pofwc_purchase_order_gateway_init() {
 						'label'   => __( 'Is email a required field? Uncheck this if this field is not to be displayed.', 'pofwc' ),
 						'default' => 'yes'
 					),
+
+					'po_show_in_email' => array(
+						'title'   => __( 'Show purchase order details in order emails', 'pofwc' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Show details', 'pofwc' ),
+						'default' => 'yes',
+						'description' => __( 'Choose to display the purchase order details in order emails. Default is checked.', 'pofwc' ),
+						'desc_tip'    => true,
+					),
+
 				) );
 			}
 		
@@ -619,6 +633,8 @@ function pofwc_purchase_order_gateway_init() {
 			
 			/**
 			 * Bypasses the Stripe plugin's validation of fields
+			 *
+			 *  @access public
 			 * 
 			 * @param array $required_fields  		The required fields
 			 *
@@ -626,7 +642,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0							Added purchase-order-email
 			 */
 
-			function pofwc_stripe_validate_checkout_unset_gateways_required_fields( $required_fields ){
+			public function pofwc_stripe_validate_checkout_unset_gateways_required_fields( $required_fields ){
 				
 				if( isset( $required_fields['purchase-order-number'] ) ){
 					unset( $required_fields['purchase-order-number'] );
@@ -672,7 +688,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0			Added _purchase_order_email
 			 */
 			
-			function pofwc_display_purchase_order_meta(){
+			public function pofwc_display_purchase_order_meta(){
 				
 				$order_id = get_the_ID();
 				
@@ -696,95 +712,98 @@ function pofwc_purchase_order_gateway_init() {
 				
 			}
 			
+
+
 			
+			/**
+			 *  Displays the purchase order number on the order-received page
+			 *
+			 *  @access public
+			 *  
+			 *  @return string		The formatted HTML
+			 *  
+			 *  @since 1.7.4
+			 *  @since 1.7.9		Purchase order details now displayed on order-received page
+			 */
 			
+			public function pofwc_add_po_number_to_order_received_page() {
+				
+				global $wp;
+				$order_id = absint( $wp->query_vars['order-received'] );
+				
+				$purchase_order_number = get_post_meta( $order_id, '_purchase_order_number', true );
+				
+				if ( '' != $purchase_order_number ) {
+					
+					echo '<p><strong>' . __( 'Purchase Order number', 'pofwc' ) . ':</strong> ' . $purchase_order_number . '<br>';
+					echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? '<strong>Invoice details:</strong><br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
+					echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';	
+					echo ( get_post_meta( $order_id, '_purchase_order_email', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_email', true ) ) . '<br>' : '';
+					
+				}
+				
+			}			
 			
+
+
+			
+			/**
+			 *  Adds the purchase order number to the order emails
+			 *
+			 *  @access public
+			 *  
+			 *  @param array $fields 				The order meta fields
+			 *  @param bool $sent_to_admin 			Send email to admin as well as customer?
+			 *  @param object $order 				The order object
+			 *  
+			 *  @return array $fields				The updated order meta fields
+			 *  
+			 *  @since 1.7.4
+			 *  @since 1.7.5						Removed erroneous colon
+			 *  @since 1.7.9						Purchase order details now displayed on order emails
+			 *  @since 1.8.4						Added option to not display on order emails
+			 */
+			
+			public function pofwc_email_order_meta_fields( $fields, $sent_to_admin, $order ) {
+				
+				if( $this->po_show_in_email == 'yes' ){
+
+					$sent_to_admin = true;
+					
+					$purchase_order_number = array( 'label' => __( 'Purchase Order number', 'pofwc' ), 'value' => esc_html( get_post_meta( $order->get_id(), '_purchase_order_number', true ) ) );
+					
+					$purchase_order_company_name = ( get_post_meta( $order->get_id(), '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order->get_id(), '_purchase_order_company_name', true ) ) : '';	
+					$purchase_order_address1 = ( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) : '';	
+					$purchase_order_address2 = ( get_post_meta( $order->get_id(), '_purchase_order_address2', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address2', true ) ) : '';		
+					$purchase_order_address3 = ( get_post_meta( $order->get_id(), '_purchase_order_address3', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address3', true ) ) : '';	
+					$purchase_order_town = ( get_post_meta( $order->get_id(), '_purchase_order_town', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_town', true ) ) : '';	
+					$purchase_order_county = ( get_post_meta( $order->get_id(), '_purchase_order_county', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_county', true ) ) : '';	
+					$purchase_order_postcode = ( get_post_meta( $order->get_id(), '_purchase_order_postcode', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_postcode', true ) ) : '';	
+					$purchase_order_email = ( get_post_meta( $order->get_id(), '_purchase_order_email', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_email', true ) ) : '';
+					
+					$purchase_order_details = ( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) ? array( 'label' => __( 'Invoice details', 'pofwc' ), 'value' => '<br>' . $purchase_order_company_name . $purchase_order_address1 . $purchase_order_address2 . $purchase_order_address3 . $purchase_order_town . $purchase_order_county . $purchase_order_postcode . $purchase_order_email ) : '';	
+					
+					if ( '' != $purchase_order_number ) {
+						
+						$fields['purchase_order_number'] = $purchase_order_number;
+						$fields['purchase_order_details'] = $purchase_order_details;
+						
+					}
+					
+					return $fields;
+
+				}
+				
+			}
+
 		}
 			
-		
-		
-	
 	}
-	
-	
-	
-	
-	/**
-	 *  Displays the purchase order number on the order-received page
-	 *  
-	 *  @return string		The formatted HTML
-	 *  
-	 *  @since 1.7.4
-	 *  @since 1.7.9		Purchase order details now displayed on order-received page
-	 */
-	
-	function pofwc_add_po_number_to_order_received_page() {
-		
-		global $wp;
-		$order_id = absint( $wp->query_vars['order-received'] );
-		
-		$purchase_order_number = get_post_meta( $order_id, '_purchase_order_number', true );
-		
-		if ( '' != $purchase_order_number ) {
-			
-			echo '<p><strong>' . __( 'Purchase Order number', 'pofwc' ) . ':</strong> ' . $purchase_order_number . '<br>';
-			echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? '<strong>Invoice details:</strong><br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
-			echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_email', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_email', true ) ) . '<br>' : '';
-			
-		}
-		
-	}
-	add_action( 'woocommerce_thankyou', 'pofwc_add_po_number_to_order_received_page', 1 );
-	
-	
-	
-	
-	/**
-	 *  Adds the purchase order number to the order emails
-	 *  
-	 *  @param array $fields 				The order meta fields
-	 *  @param bool $sent_to_admin 			Send email to admin as well as customer?
-	 *  @param object $order 				The order object
-	 *  
-	 *  @return array $fields				The updated order meta fields
-	 *  
-	 *  @since 1.7.4
-	 *  @since 1.7.5						Removed erroneous colon
-	 *  @since 1.7.9						Purchase order details now displayed on order emails
-	 */
-	
-	function pofwc_email_order_meta_fields( $fields, $sent_to_admin = true, $order ) {
-		
-		$purchase_order_number = array( 'label' => __( 'Purchase Order number', 'pofwc' ), 'value' => esc_html( get_post_meta( $order->get_id(), '_purchase_order_number', true ) ) );
-		
-		$purchase_order_company_name = ( get_post_meta( $order->get_id(), '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order->get_id(), '_purchase_order_company_name', true ) ) : '';	
-		$purchase_order_address1 = ( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) : '';	
-		$purchase_order_address2 = ( get_post_meta( $order->get_id(), '_purchase_order_address2', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address2', true ) ) : '';		
-		$purchase_order_address3 = ( get_post_meta( $order->get_id(), '_purchase_order_address3', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_address3', true ) ) : '';	
-		$purchase_order_town = ( get_post_meta( $order->get_id(), '_purchase_order_town', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_town', true ) ) : '';	
-		$purchase_order_county = ( get_post_meta( $order->get_id(), '_purchase_order_county', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_county', true ) ) : '';	
-		$purchase_order_postcode = ( get_post_meta( $order->get_id(), '_purchase_order_postcode', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_postcode', true ) ) : '';	
-		$purchase_order_email = ( get_post_meta( $order->get_id(), '_purchase_order_email', true ) ) ? '<br>' . esc_html( get_post_meta( $order->get_id(), '_purchase_order_email', true ) ) : '';
-		
-		$purchase_order_details = ( get_post_meta( $order->get_id(), '_purchase_order_address1', true ) ) ? array( 'label' => __( 'Invoice details', 'pofwc' ), 'value' => '<br>' . $purchase_order_company_name . $purchase_order_address1 . $purchase_order_address2 . $purchase_order_address3 . $purchase_order_town . $purchase_order_county . $purchase_order_postcode . $purchase_order_email ) : '';	
-		
-		if ( '' != $purchase_order_number ) {
-			
-			$fields['purchase_order_number'] = $purchase_order_number;
-			$fields['purchase_order_details'] = $purchase_order_details;
-			
-		}
-		
-		return $fields;
-		
-	}
-	add_filter( 'woocommerce_email_order_meta_fields', 'pofwc_email_order_meta_fields', 10, 3 );
   
 }

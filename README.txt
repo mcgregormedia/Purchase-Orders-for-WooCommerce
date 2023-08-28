@@ -3,7 +3,7 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ The purchase order details will be displayed in the admin order screen, the cust
 
 = WooCommerce compatibility =
 
-This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x and 7.x versions.
+This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x, 7.x and 8.x versions.
 
 = Compatibility with other plugins =
 
@@ -51,6 +51,11 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.8.4 28-08-2023
+ADDED: option to not display PO details in order emails
+UPDATED: Tested up to WordPress 6.3
+UPDATED: compatibility with WooCommerce 8.0
+
 1.8.3 14-03-2023
 UPDATED: Tested up to WordPress 6.2
 UPDATED: compatibility with WooCommerce 7.5
