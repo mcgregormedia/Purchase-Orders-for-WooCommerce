@@ -89,6 +89,21 @@ function pofwc_purchase_order_gateway_init() {
 				add_filter( 'wc_stripe_validate_checkout_required_fields', array( $this, 'pofwc_stripe_validate_checkout_unset_gateways_required_fields' ) );
 				
 			}
+
+
+
+
+			/**
+			 * Gets WooCommerce order statuses
+			 * 
+			 * @since 1.8.5			Added ability to select from all order statuses, including custom statuses
+			 */
+			private function get_order_statuses(){
+
+				$statuses = wc_get_order_statuses();
+				return $statuses;
+
+			}
 			
 			
 
@@ -105,9 +120,12 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.7.0			Added display and required options for fields
 			 * @since 1.7.10		Added required option for purchase order number field
 			 * @since 1.8.4			Added option to not display on order emails
+			 * @since 1.8.5			Added ability to select from all order statuses, including custom statuses
 			 */
 			
 			public function init_form_fields() {
+
+				$statuses = $this->get_order_statuses();
 		  
 				$this->form_fields = apply_filters( 'wc_offline_form_fields', array(
 			  
@@ -121,11 +139,7 @@ function pofwc_purchase_order_gateway_init() {
 					'status' => array(
 						'title'   => __( 'Checkout order status', 'pofwc' ),
 						'type'    => 'select',
-						'options' => array(
-							'on-hold' => 'On Hold',
-							'pending' => 'Pending',
-							'processing' => 'Processing'
-						 ),
+						'options' => $statuses,
 						'description' => __( 'This controls the order status after checkout.', 'pofwc' ),
 						'desc_tip'    => true,
 					),

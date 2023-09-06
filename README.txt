@@ -37,11 +37,15 @@ _purchase_order_email
 
 = Order status =
 
-By popular demand, the Pending order status has been added to On Hold and Processing. Be aware that if you set the status to Pending, neither you nor the customer will receive an order email after checkout - this is standard WooCommerce functionality. Order emails will be sent when a status is changed from Pending to On Hold or Processing.
+Select the order status to apply to the order to when a customer checks out using a Purchase Order. All order statuses are available for selection including any custom statuses that may have been added. Be aware that if you set the status to Pending, neither you nor the customer will receive an order email after checkout - this is standard WooCommerce functionality. By default, order emails will be sent when a status is changed from Pending to On Hold or Processing.
 
 = GDPR information =
 
 This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (not trashed).
+
+= Roadmap =
+
+High Performance Order Storage (HPOS) compatibility will be added but at this time there is no target date for this.
 
 == Screenshots ==
 1. The admin settings for the gateway.
@@ -51,6 +55,10 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.8.5 06-09-2023
+ADDED: ability to select from all order statuses, including custom statuses
+UPDATED: compatibility with WooCommerce 8.1
+
 1.8.4 28-08-2023
 ADDED: option to not display PO details in order emails
 UPDATED: Tested up to WordPress 6.3
