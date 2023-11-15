@@ -5,10 +5,10 @@ Plugin URI: https://mcgregormedia.co.uk
 Description: Adds a Purchase Order payment method to WooCommerce.
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk
-Version: 1.8.5
+Version: 1.9.0
 Text Domain: pofwc
 WC requires at least: 3.0
-WC tested up to: 8.1
+WC tested up to: 8.3
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Came directly here? Vamoose. Go on, scram.
 	
 }
+
+
+
+
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
+
+
+
+/**
+ * Declare HPOS compatibility
+ * 
+ * @since 1.9.0					Added compatibility
+ */
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 
 
 
@@ -154,19 +174,42 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pofwc_purchas
 
 
 function pofwc_show_invoice_address( $order_id ){
+
+	$order = wc_get_order( $order_id );
 	
 	echo '<h2>Purchase order information</h2>';
-	echo '<p>';
-		echo '<strong>Purchase order number:</strong> ' . get_post_meta( $order_id, '_purchase_order_number', true ) . '<br>';			
-		echo '<strong>Invoice address:</strong> <br>';
-		echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
-		echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
-		echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
-		echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
-		echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
-		echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
-		echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';					
-	echo '</p>';
+
+	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+
+		echo '<p>';
+			echo '<strong>Purchase order number:</strong> ' . $order->get_meta( '_purchase_order_number', true ) . '<br>';			
+			echo '<strong>Invoice address:</strong> <br>';
+			echo ( $order->get_meta( '_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta( '_purchase_order_company_name', true ) ) . '<br>' : '';	
+			echo ( $order->get_meta( '_purchase_order_address1', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address1', true ) ) . '<br>' : '';	
+			echo ( $order->get_meta( '_purchase_order_address2', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address2', true ) ) . '<br>' : '';		
+			echo ( $order->get_meta( '_purchase_order_address3', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address3', true ) ) . '<br>' : '';	
+			echo ( $order->get_meta( '_purchase_order_town', true ) ) ? esc_html( $order->get_meta( '_purchase_order_town', true ) ) . '<br>' : '';	
+			echo ( $order->get_meta( '_purchase_order_county', true ) ) ? esc_html( $order->get_meta( '_purchase_order_county', true ) ) . '<br>' : '';	
+			echo ( $order->get_meta( '_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta( '_purchase_order_postcode', true ) ) . '<br>' : '';					
+		echo '</p>';
+
+	}else{
+
+		echo '<p>';
+			echo '<strong>Purchase order number:</strong> ' . get_post_meta( $order_id, '_purchase_order_number', true ) . '<br>';			
+			echo '<strong>Invoice address:</strong> <br>';
+			echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
+			echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
+			echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
+			echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
+			echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
+			echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
+			echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';					
+		echo '</p>';
+
+	}
+
+	
 		
 }
 add_action( 'woocommerce_view_order', 'pofwc_show_invoice_address', 20 );
