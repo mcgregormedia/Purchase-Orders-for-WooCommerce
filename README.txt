@@ -3,8 +3,8 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 6.3
-Requires PHP: 7.0
+Tested up to: 6.5
+Requires PHP: 7.4
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,10 @@ The purchase order details will be displayed in the admin order screen, the cust
 = WooCommerce compatibility =
 
 This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x, 7.x and 8.x versions.
+
+= HPOS compatibility =
+
+This plugin is compatible with WooCommerce High Performance Order Storage (HPOS) and WordPress posts storage (legacy).
 
 = Compatibility with other plugins =
 
@@ -43,10 +47,6 @@ Select the order status to apply to the order to when a customer checks out usin
 
 This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (not trashed).
 
-= Roadmap =
-
-High Performance Order Storage (HPOS) compatibility will be added but at this time there is no target date for this.
-
 == Screenshots ==
 1. The admin settings for the gateway.
 2. Checkout page on Storefront theme.
@@ -55,6 +55,12 @@ High Performance Order Storage (HPOS) compatibility will be added but at this ti
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.9.0 15-11-2023
+ADDED: HPOS compatibility
+UPDATED: Tested up to WordPress 6.5
+UPDATED: compatibility with WooCommerce 8.3
+UPDATED: minimum PHP version to 7.4
+
 1.8.5 06-09-2023
 ADDED: ability to select from all order statuses, including custom statuses
 UPDATED: compatibility with WooCommerce 8.1
