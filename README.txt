@@ -4,6 +4,7 @@ Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
 Tested up to: 6.5
+Stable tag: 1.10.0
 Requires PHP: 7.4
 Requires plugin: woocommerce
 WC requires at least: 3.0
@@ -62,7 +63,7 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
-1.10.0
+1.10.0 19-05-2024
 FIXED: Missing translation strings
 ADDED: French Canadian translation (H/T Marc-André)
 ADDED: Plugin dependencies
