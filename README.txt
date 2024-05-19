@@ -5,6 +5,9 @@ Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
 Tested up to: 6.5
 Requires PHP: 7.4
+Requires plugin: woocommerce
+WC requires at least: 3.0
+WC tested up to: 8.9
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +27,10 @@ This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x, 7.x and 8.x versi
 = HPOS compatibility =
 
 This plugin is compatible with WooCommerce High Performance Order Storage (HPOS) and WordPress posts storage (legacy).
+
+= Checkout Blocks Compatibility =
+
+This plugin is not yet compatible with checkout blocks. 
 
 = Compatibility with other plugins =
 
@@ -55,6 +62,14 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.10.0
+FIXED: Missing translation strings
+ADDED: French Canadian translation (H/T Marc-André)
+ADDED: Plugin dependencies
+UPDATED: Compatibility with WooCommerce 8.9
+REMOVED: Notice displayed if WooCommerce is not activated
+REMOVED: Legacy meta data functions so WooCommerce now handles compatibility
+
 1.9.1 20-12-2023
 UPDATED: compatibility with WooCommerce 8.4
 
