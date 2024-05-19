@@ -5,10 +5,13 @@ Plugin URI: https://mcgregormedia.co.uk
 Description: Adds a Purchase Order payment method to WooCommerce.
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk
-Version: 1.9.1
+Version: 1.10.0
 Text Domain: pofwc
+Requires at least: 4.8
+Requires PHP: 7.4
+Requires plugins: woocommerce
 WC requires at least: 3.0
-WC tested up to: 8.4
+WC tested up to: 8.9
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -79,58 +82,6 @@ register_activation_hook( __FILE__, 'pofwc_activate' );
 
 
 /**
- * Checks whether WooCommerce is active and deactivates plugin with admin notice if not
- * 
- * @since 1.2.0					Added function
- */
-
-function pofwc_load_plugin(){
-
-    if ( is_admin() && get_option( 'pofwc_activated' ) == 'pofwc' ) {
-		
-        delete_option( 'pofwc_activated' ); // remove option we set on activation
-
-        if ( !class_exists( 'WooCommerce' ) ) { // check WooCommerce is active
-			
-            add_action( 'admin_notices', 'pofwc_admin_notice' ); // if not display admin notice
-
-            deactivate_plugins( plugin_basename( __FILE__ ) ); // deactivate plugin
-
-            if ( isset( $_GET['activate'] ) ) {
-				
-                unset( $_GET['activate'] );
-				
-            }
-        }
-		
-    }
-	
-}
-add_action( 'admin_init', 'pofwc_load_plugin' );
-
-
-
-
-/**
- * Display an error message if WooCommerce is not activated
- * 
- * @return string				The formatted HTML
- * 
- * @since 1.2.0					Added function
- */
-
-function pofwc_admin_notice (){
-	
-    ?>
-    <div class="notice notice-error"><p><?php _e( 'Purchase Orders for WooCommerce requires WooCommerce. Please install and activate WooCommerce.', 'pofwc' ) ?></p></div>
-    <?php
-	
-}
-
-
-
-
-/**
  * Adds the gateway to WC Available Gateways
  * 
  * @param array $gateways all available WC gateways
@@ -171,43 +122,31 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pofwc_purchas
 
 
 
+/**
+ * Undocumented function
+ *
+ * @param  int $order_id	The order ID
+ * @return void
+ *
+ * @since 1.10.0
+ */
 function pofwc_show_invoice_address( $order_id ){
 
 	$order = wc_get_order( $order_id );
 	
-	echo '<h2>Purchase order information</h2>';
+	echo '<h2>' . __( 'Purchase order information', 'pofwc' ) . '</h2>';
 
-	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
-
-		echo '<p>';
-			echo '<strong>Purchase order number:</strong> ' . $order->get_meta( '_purchase_order_number', true ) . '<br>';			
-			echo '<strong>Invoice address:</strong> <br>';
-			echo ( $order->get_meta( '_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta( '_purchase_order_company_name', true ) ) . '<br>' : '';	
-			echo ( $order->get_meta( '_purchase_order_address1', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address1', true ) ) . '<br>' : '';	
-			echo ( $order->get_meta( '_purchase_order_address2', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address2', true ) ) . '<br>' : '';		
-			echo ( $order->get_meta( '_purchase_order_address3', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address3', true ) ) . '<br>' : '';	
-			echo ( $order->get_meta( '_purchase_order_town', true ) ) ? esc_html( $order->get_meta( '_purchase_order_town', true ) ) . '<br>' : '';	
-			echo ( $order->get_meta( '_purchase_order_county', true ) ) ? esc_html( $order->get_meta( '_purchase_order_county', true ) ) . '<br>' : '';	
-			echo ( $order->get_meta( '_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta( '_purchase_order_postcode', true ) ) . '<br>' : '';					
-		echo '</p>';
-
-	}else{
-
-		echo '<p>';
-			echo '<strong>Purchase order number:</strong> ' . get_post_meta( $order_id, '_purchase_order_number', true ) . '<br>';			
-			echo '<strong>Invoice address:</strong> <br>';
-			echo ( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_company_name', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_address1', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address1', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_address2', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address2', true ) ) . '<br>' : '';		
-			echo ( get_post_meta( $order_id, '_purchase_order_address3', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_address3', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_town', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_town', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_county', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_county', true ) ) . '<br>' : '';	
-			echo ( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) ? esc_html( get_post_meta( $order_id, '_purchase_order_postcode', true ) ) . '<br>' : '';					
-		echo '</p>';
-
-	}
-
-	
+	echo '<p>';
+		echo '<strong>' . __( 'Purchase order number', 'pofwc' ) . ':</strong> ' . $order->get_meta( '_purchase_order_number', true ) . '<br>';			
+		echo '<strong>' . __( 'Invoice address', 'pofwc' ) . ':</strong> <br>';
+		echo ( $order->get_meta( '_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta( '_purchase_order_company_name', true ) ) . '<br>' : '';	
+		echo ( $order->get_meta( '_purchase_order_address1', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address1', true ) ) . '<br>' : '';	
+		echo ( $order->get_meta( '_purchase_order_address2', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address2', true ) ) . '<br>' : '';		
+		echo ( $order->get_meta( '_purchase_order_address3', true ) ) ? esc_html( $order->get_meta( '_purchase_order_address3', true ) ) . '<br>' : '';	
+		echo ( $order->get_meta( '_purchase_order_town', true ) ) ? esc_html( $order->get_meta( '_purchase_order_town', true ) ) . '<br>' : '';	
+		echo ( $order->get_meta( '_purchase_order_county', true ) ) ? esc_html( $order->get_meta( '_purchase_order_county', true ) ) . '<br>' : '';	
+		echo ( $order->get_meta( '_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta( '_purchase_order_postcode', true ) ) . '<br>' : '';					
+	echo '</p>';
 		
 }
 add_action( 'woocommerce_view_order', 'pofwc_show_invoice_address', 20 );
@@ -217,12 +156,3 @@ add_action( 'woocommerce_view_order', 'pofwc_show_invoice_address', 20 );
 
 // Require files
 require dirname( __FILE__ ) . '/class-purchase-order-gateway.php';
-
-
-
-
-
-
-
-
-
