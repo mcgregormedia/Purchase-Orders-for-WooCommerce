@@ -5,7 +5,8 @@ Plugin URI: https://mcgregormedia.co.uk
 Description: Adds a Purchase Order payment method to WooCommerce.
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk
-Version: 1.10.0
+Version: 1.10.1
+Stable tag: 1.10.1
 Text Domain: pofwc
 Requires at least: 4.8
 Requires PHP: 7.4
@@ -149,7 +150,7 @@ function pofwc_show_invoice_address( $order_id ){
 	echo '</p>';
 		
 }
-add_action( 'woocommerce_view_order', 'pofwc_show_invoice_address', 20 );
+add_action( 'woocommerce_view_order', 'pofwc_show_invoice_address', 20, 1 );
 
 
 

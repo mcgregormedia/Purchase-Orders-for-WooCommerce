@@ -29,6 +29,35 @@ function pofwc_purchase_order_gateway_init() {
 	
 
 		class WC_Gateway_Purchase_Order extends WC_Payment_Gateway {
+
+
+
+			/**
+			 * @since 1.10.1	Declared properties
+			 */
+			public $title;
+			public $status;
+			public $description;
+			public $instructions;
+			public $po_number_label;
+			public $po_number_required;
+			public $company_name_display;
+			public $address_1_display;
+			public $address_2_display;
+			public $address_3_display;
+			public $town_display;
+			public $county_display;
+			public $postcode_display;
+			public $email_display;
+			public $company_name_required;
+			public $address_1_required;
+			public $address_2_required;
+			public $address_3_required;
+			public $town_required;
+			public $county_required;
+			public $postcode_required;
+			public $email_required;
+			public $po_show_in_email;
 		
 			
 			
@@ -460,8 +489,8 @@ function pofwc_purchase_order_gateway_init() {
 					?>
 				
 					<p class="form-row form-row-wide <?php echo $company_name_required_class; ?>">
-						<label for="purchase-order-company-name"><?php _e( 'Company name', 'pofwc' ); ?><?php echo $company_name_required_text; ?></label>
-						<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="Invoice <?php _e( 'Company name', 'pofwc' ); ?>">
+						<label for="purchase-order-company-name"><?php _e( 'Invoice company name', 'pofwc' ); ?><?php echo $company_name_required_text; ?></label>
+						<input type="text" id="purchase-order-company-name" name="purchase-order-company-name" class="input-text" placeholder="<?php _e( 'Company name', 'pofwc' ); ?>">
 					</p>
 				
 				<?php } ?>
@@ -710,6 +739,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0			Added _purchase_order_email
 			 * @since 1.10.0		Removed legacy meta functions so WooCommerce now handles compatibility
 			 * @since 1.10.0		Fixed missing translation strings
+			 * @since 1.10.1		Fixed PHP warning "Notice: Function is_internal_meta_key was called incorrectly"
 			 */
 			
 			public function pofwc_display_purchase_order_meta(){
@@ -717,7 +747,7 @@ function pofwc_purchase_order_gateway_init() {
 				$order = wc_get_order( get_the_ID() );
 				$order_id = get_the_ID();
 				
-				if( $order->get_meta('_payment_method', true ) == 'purchase_order_gateway' && $order->get_meta('_purchase_order_number', true ) ){
+				if( $order->get_payment_method() == 'purchase_order_gateway' && $order->get_meta('_purchase_order_number', true ) ){
 		
 					echo '<h3>' . __( 'Purchase order information', 'pofwc' ) . '</h3>';
 					echo '<p>';
