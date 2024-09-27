@@ -4,7 +4,7 @@ Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
 Tested up to: 6.6
-Stable tag: 1.11.0
+Stable tag: 1.11.1
 Requires PHP: 7.4
 Requires plugin: woocommerce
 WC requires at least: 3.0
@@ -37,7 +37,6 @@ This plugin is not yet compatible with checkout blocks.
 
 Some invoicing plugins require the meta keys of purchase order data to display this data on invoices. The meta keys used in this plugin are listed below:
 
-```
 _purchase_order_number
 _purchase_order_company_name
 _purchase_order_address1
@@ -47,7 +46,6 @@ _purchase_order_town
 _purchase_order_county
 _purchase_order_postcode
 _purchase_order_email
-```
 
 = Order status =
 
@@ -57,29 +55,26 @@ Select the order status to apply to the order to when a customer checks out usin
 
 You can add your own fields to the checkout form by adding custom HTML to the action hook in the PO checkout form:
 
-```
 pofwc_form_after_po_form
-```
 
 To add a text input field after the PO number field, the code should look something like this:
 
-```
+
 function custom_checkout_field_after_po_form() {
-    ?>
-    <p class="form-row form-row-wide">
-        <label for="YOUR-FIELD-ID">YOUR FIELD LABEL TEXT</label>
-        <input type="text" id="YOUR-FIELD-ID" name="YOUR_FIELD_NAME" class="input-text" placeholder="YOUR FIELD PLACEHOLDER">
-    </p>
-    <?php      
+
+    echo '<p class="form-row form-row-wide">';
+        echo '<label for="YOUR-FIELD-ID">YOUR FIELD LABEL TEXT</label>';
+        echo '<input type="text" id="YOUR-FIELD-ID" name="YOUR_FIELD_NAME" class="input-text" placeholder="YOUR FIELD PLACEHOLDER">';
+    echo '</p>';
+     
 }
 add_action( 'pofwc_form_after_po_form', 'custom_checkout_field_after_po_form' );
-```
+
 
 You can of course change the form HTML to output a different field type such as a `select` dropdown or `textarea`. 
 
 To save your custom field, hook into the woocommerce_checkout_update_order_meta action as in the example below:
 
-```
 function custom_checkout_field_update_order_meta( $order_id ) {
 
     $order = wc_get_order( $order_id );
@@ -91,20 +86,16 @@ function custom_checkout_field_update_order_meta( $order_id ) {
     $order->save();
 }
 add_action( 'woocommerce_checkout_update_order_meta', 'custom_checkout_field_update_order_meta', 10, 1 );
-```
 
 There are four places the PO data can be displayed: the order thank you page, the order emails, the customer order history, and the admin Edit Order screen. To display your custom field data, use one of the following action hooks to add your data in the required place:
 
-```
 pofwc_thankyou_display_after_po_form
 pofwc_email_display_after_po_form
 pofwc_account_display_after_po_form
 pofwc_admin_display_after_po_form
-```
 
 To output your example text input from above in the checkout thank you page, the Edit Order screen and customer order history, the code should look something like this:
 
-```
 function display_custom_order_data_after_po_form( $order ) {
 
     echo ( $order->get_meta( 'YOUR_FIELD_NAME', true ) ) ? esc_html( $order->get_meta( 'YOUR_FIELD_NAME', true ) ) . '<br>' : '';
@@ -112,17 +103,14 @@ function display_custom_order_data_after_po_form( $order ) {
 add_action( 'pofwc_thankyou_display_after_po_form', 'display_custom_order_data_after_po_form', 10, 1 );
 add_action( 'pofwc_account_display_after_po_form', 'display_custom_order_data_after_po_form', 10, 1 );
 add_action( 'pofwc_admin_display_after_po_form', 'display_custom_order_data_after_po_form', 10, 1 );
-```
 
 Displaying the data in the emails is slightly different as data escaping is done later in the output process:
 
-```
 function display_email_custom_order_data_after_po_form( $order ) {
 
     echo $order->get_meta( 'YOUR_FIELD_NAME', true ) ? $order->get_meta( 'YOUR_FIELD_NAME', true ) : '';
 }
 add_action( 'pofwc_email_display_after_po_form', 'display_email_custom_order_data_after_po_form', 10, 1 );
-```
 
 This code all goes in your functions.php file in your child theme - don't place this code in a parent theme (unless it's one you maintain yourself) as it will be overwritten when the theme is updated.
 
@@ -138,6 +126,9 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.11.1 27-09-2024
+TWEAK: format readme code text
+
 1.11.0 27-09-2024
 ADDED: action hooks in PO checkout form, thank you page, order history and admin Edit Order screen
 UPDATED: Compatibility with WooCommerce 9.3
