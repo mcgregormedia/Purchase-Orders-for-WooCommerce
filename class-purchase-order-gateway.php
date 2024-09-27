@@ -460,6 +460,7 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.7.10		Added required option for purchase order number field
 			 * @since 1.7.16		Fixed company name translation not working on the frontend
 			 * @since 1.10.0		Fixed missing translation strings
+			 * @since 1.11.0		Added action hooks
 			 */
 			
 			public function payment_fields(){
@@ -471,7 +472,7 @@ function pofwc_purchase_order_gateway_init() {
 				</p>
 				
 				<?php
-				$po_number_label = ( $this->po_number_label != '' )? $this->po_number_label : __( 'Purchase order number', 'pofwc' );
+				$po_number_label = ( $this->po_number_label != '' ) ? $this->po_number_label : __( 'Purchase order number', 'pofwc' );
 				$po_number_required_text = ( $this->po_number_required == 'yes' ) ? '<span class="required">*</span>' : ''; 
 				$po_number_required_class = ( $this->po_number_required == 'yes' ) ? 'validate-required' : '';
 				?>
@@ -592,6 +593,8 @@ function pofwc_purchase_order_gateway_init() {
 					</p>
 				
 				<?php } ?>
+
+				<?php do_action( 'pofwc_form_after_po_form' ); ?>
 				
 				<?php
 			}
@@ -739,28 +742,41 @@ function pofwc_purchase_order_gateway_init() {
 			 * @since 1.4.0			Added _purchase_order_email
 			 * @since 1.10.0		Removed legacy meta functions so WooCommerce now handles compatibility
 			 * @since 1.10.0		Fixed missing translation strings
-			 * @since 1.10.1		Fixed PHP warning "Notice: Function is_internal_meta_key was called incorrectly"
+			 * @since 1.11.0		Fixed PHP warning "Notice: Function is_internal_meta_key was called incorrectly"
+			 * @since 1.11.0		Added action hooks
 			 */
 			
 			public function pofwc_display_purchase_order_meta(){
 				
 				$order = wc_get_order( get_the_ID() );
-				$order_id = get_the_ID();
 				
 				if( $order->get_payment_method() == 'purchase_order_gateway' && $order->get_meta('_purchase_order_number', true ) ){
 		
 					echo '<h3>' . __( 'Purchase order information', 'pofwc' ) . '</h3>';
+
 					echo '<p>';
-						echo '<strong>' . __( 'Purchase order number:', 'pofwc' ) . '</strong> ' . $order->get_meta('_purchase_order_number', true ) . '<br>';			
+						echo '<strong>' . __( 'Purchase order number:', 'pofwc' ) . '</strong> ' . $order->get_meta('_purchase_order_number', true ) . '<br>';
+
 						echo '<strong>' . __( 'Invoice details:', 'pofwc' ) . '</strong> <br>';
-						echo ( $order->get_meta('_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta('_purchase_order_company_name', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_address1', true ) ) ? esc_html( $order->get_meta('_purchase_order_address1', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_address2', true ) ) ? esc_html( $order->get_meta('_purchase_order_address2', true ) ) . '<br>' : '';		
-						echo ( $order->get_meta('_purchase_order_address3', true ) ) ? esc_html( $order->get_meta('_purchase_order_address3', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_town', true ) ) ? esc_html( $order->get_meta('_purchase_order_town', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_county', true ) ) ? esc_html( $order->get_meta('_purchase_order_county', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta('_purchase_order_postcode', true ) ) . '<br>' : '';	
-						echo ( $order->get_meta('_purchase_order_email', true ) ) ? esc_html( $order->get_meta('_purchase_order_email', true ) ) . '<br>' : '';					
+						echo ( $order->get_meta('_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta('_purchase_order_company_name', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_address1', true ) ) ? esc_html( $order->get_meta('_purchase_order_address1', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_address2', true ) ) ? esc_html( $order->get_meta('_purchase_order_address2', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_address3', true ) ) ? esc_html( $order->get_meta('_purchase_order_address3', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_town', true ) ) ? esc_html( $order->get_meta('_purchase_order_town', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_county', true ) ) ? esc_html( $order->get_meta('_purchase_order_county', true ) ) . '<br>' : '';
+
+						do_action( 'pofwc_admin_display_after_po_county', $order );	
+
+						echo ( $order->get_meta('_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta('_purchase_order_postcode', true ) ) . '<br>' : '';
+
+						echo ( $order->get_meta('_purchase_order_email', true ) ) ? esc_html( $order->get_meta('_purchase_order_email', true ) ) . '<br>' : '';
+
+						do_action( 'pofwc_admin_display_after_po_form', $order );
 					echo '</p>';
 				
 				}
@@ -780,6 +796,7 @@ function pofwc_purchase_order_gateway_init() {
 			 *  @since 1.7.4
 			 *  @since 1.7.9		Purchase order details now displayed on order-received page
 			 *  @since 1.10.0		Removed legacy meta functions so WooCommerce now handles compatibility
+			 *  @since 1.11.0		Added action hooks
 			 */
 			
 			public function pofwc_add_po_number_to_order_received_page() {
@@ -793,15 +810,24 @@ function pofwc_purchase_order_gateway_init() {
 				if ( '' != $purchase_order_number ) {
 					
 					echo '<p><strong>' . __( 'Purchase Order number', 'pofwc' ) . ':</strong> ' . $purchase_order_number . '<br>';
-					echo ( $order->get_meta('_purchase_order_address1', true ) ) ? '<strong>Invoice details:</strong><br>' : '';	
-					echo ( $order->get_meta('_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta('_purchase_order_company_name', true ) ) . '<br>' : '';	
-					echo ( $order->get_meta('_purchase_order_address1', true ) ) ? esc_html( $order->get_meta('_purchase_order_address1', true ) ) . '<br>' : '';	
-					echo ( $order->get_meta('_purchase_order_address2', true ) ) ? esc_html( $order->get_meta('_purchase_order_address2', true ) ) . '<br>' : '';		
-					echo ( $order->get_meta('_purchase_order_address3', true ) ) ? esc_html( $order->get_meta('_purchase_order_address3', true ) ) . '<br>' : '';	
-					echo ( $order->get_meta('_purchase_order_town', true ) ) ? esc_html( $order->get_meta('_purchase_order_town', true ) ) . '<br>' : '';	
-					echo ( $order->get_meta('_purchase_order_county', true ) ) ? esc_html( $order->get_meta('_purchase_order_county', true ) ) . '<br>' : '';	
-					echo ( $order->get_meta('_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta('_purchase_order_postcode', true ) ) . '<br>' : '';	
+
+					echo ( $order->get_meta('_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta('_purchase_order_company_name', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_address1', true ) ) ? esc_html( $order->get_meta('_purchase_order_address1', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_address2', true ) ) ? esc_html( $order->get_meta('_purchase_order_address2', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_address3', true ) ) ? esc_html( $order->get_meta('_purchase_order_address3', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_town', true ) ) ? esc_html( $order->get_meta('_purchase_order_town', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_county', true ) ) ? esc_html( $order->get_meta('_purchase_order_county', true ) ) . '<br>' : '';
+
+					echo ( $order->get_meta('_purchase_order_postcode', true ) ) ? esc_html( $order->get_meta('_purchase_order_postcode', true ) ) . '<br>' : '';
+
 					echo ( $order->get_meta('_purchase_order_email', true ) ) ? esc_html( $order->get_meta('_purchase_order_email', true ) ) . '<br>' : '';
+
+					do_action( 'pofwc_thankyou_display_after_po_form', $order );
 					
 				}
 
@@ -827,6 +853,7 @@ function pofwc_purchase_order_gateway_init() {
 			 *  @since 1.7.5						Removed erroneous colon
 			 *  @since 1.7.9						Purchase order details now displayed on order emails
 			 *  @since 1.8.4						Added option to not display on order emails
+			 *  @since 1.11.0						Added action hooks
 			 */
 			
 			public function pofwc_email_order_meta_fields( $fields, $sent_to_admin, $order ) {
@@ -834,19 +861,32 @@ function pofwc_purchase_order_gateway_init() {
 				if( $this->po_show_in_email == 'yes' ){
 
 					$sent_to_admin = true;
-					
+
 					$purchase_order_number = array( 'label' => __( 'Purchase Order number', 'pofwc' ), 'value' => esc_html( $order->get_meta( '_purchase_order_number', true ) ) );
+
+					$purchase_order_company_name = ( $order->get_meta( '_purchase_order_company_name', true ) ) ?  esc_html( $order->get_meta( '_purchase_order_company_name', true ) ) : '';
+
+					$purchase_order_address1 = ( $order->get_meta( '_purchase_order_address1', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address1', true ) ) : '';
+
+					$purchase_order_address2 = ( $order->get_meta( '_purchase_order_address2', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address2', true ) ) : '';
+
+					$purchase_order_address3 = ( $order->get_meta( '_purchase_order_address3', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address3', true ) ) : '';
+
+					$purchase_order_town = ( $order->get_meta( '_purchase_order_town', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_town', true ) ) : '';
+
+					$purchase_order_county = ( $order->get_meta( '_purchase_order_county', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_county', true ) ) : '';
+
+					$purchase_order_postcode = ( $order->get_meta( '_purchase_order_postcode', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_postcode', true ) ) : '';
 					
-					$purchase_order_company_name = ( $order->get_meta( '_purchase_order_company_name', true ) ) ? esc_html( $order->get_meta( '_purchase_order_company_name', true ) ) : '';	
-					$purchase_order_address1 = ( $order->get_meta( '_purchase_order_address1', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address1', true ) ) : '';	
-					$purchase_order_address2 = ( $order->get_meta( '_purchase_order_address2', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address2', true ) ) : '';		
-					$purchase_order_address3 = ( $order->get_meta( '_purchase_order_address3', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_address3', true ) ) : '';	
-					$purchase_order_town = ( $order->get_meta( '_purchase_order_town', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_town', true ) ) : '';	
-					$purchase_order_county = ( $order->get_meta( '_purchase_order_county', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_county', true ) ) : '';	
-					$purchase_order_postcode = ( $order->get_meta( '_purchase_order_postcode', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_postcode', true ) ) : '';	
 					$purchase_order_email = ( $order->get_meta( '_purchase_order_email', true ) ) ? '<br>' . esc_html( $order->get_meta( '_purchase_order_email', true ) ) : '';
+
+					ob_start();
+					do_action( 'pofwc_email_display_after_po_form', $order );
+					$after_po_form = ob_get_contents();
+					ob_end_clean();
+					$after_po_form = $after_po_form ? '<br>' . $after_po_form : '';
 					
-					$purchase_order_details = ( $order->get_meta( '_purchase_order_address1', true ) ) ? array( 'label' => __( 'Invoice details', 'pofwc' ), 'value' => '<br>' . $purchase_order_company_name . $purchase_order_address1 . $purchase_order_address2 . $purchase_order_address3 . $purchase_order_town . $purchase_order_county . $purchase_order_postcode . $purchase_order_email ) : '';
+					$purchase_order_details = ( $order->get_meta( '_purchase_order_address1', true ) ) ? array( 'label' => __( 'Invoice details', 'pofwc' ), 'value' => '<br>' . $purchase_order_company_name . $purchase_order_address1 .  $purchase_order_address2 . $purchase_order_address3 . $purchase_order_town . $purchase_order_county . $purchase_order_postcode . $purchase_order_email . $after_po_form ) : '';
 
 
 					if ( '' != $purchase_order_number ) {
