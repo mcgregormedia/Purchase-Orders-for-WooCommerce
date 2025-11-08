@@ -3,12 +3,12 @@ Contributors: mcgregormedia
 Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
-Tested up to: 6.6
-Stable tag: 1.11.1
+Tested up to: 6.8
+Stable tag: 1.11.2
 Requires PHP: 7.4
 Requires plugin: woocommerce
 WC requires at least: 3.0
-WC tested up to: 9.3
+WC tested up to: 10.3
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ The purchase order details will be displayed in the admin order screen, the cust
 
 = WooCommerce compatibility =
 
-This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x, 7.x, 8.x and 9.x versions.
+This plugin is compatible with WooCommerce 3.x, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x and 10.x versions.
 
 = HPOS compatibility =
 
@@ -53,7 +53,7 @@ Select the order status to apply to the order to when a customer checks out usin
 
 = Custom fields =
 
-You can add your own fields to the checkout form by adding custom HTML to the action hook in the PO checkout form:
+You can add your own fields to the frontend checkout form by adding custom HTML to the action hook in the PO checkout form:
 
 pofwc_form_after_po_form
 
@@ -126,6 +126,11 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.12.0 08-11-2025
+ADDED: add/edit PO data in the Add Order/Edit Order screens
+UPDATED: Compatibility with WordPress 6.8
+UPDATED: Compatibility with WooCommerce 10.3
+
 1.11.1 27-09-2024
 TWEAK: format readme code text
 
