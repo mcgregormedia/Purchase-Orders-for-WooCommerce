@@ -6,7 +6,7 @@ Description: Adds a Purchase Order payment method to WooCommerce.
 Author: McGregor Media Web Design
 Author URI: https://mcgregormedia.co.uk
 Version: 1.11.2
-Stable tag: 1.12.0
+Stable tag: 1.12.1
 Text Domain: pofwc
 Requires at least: 4.8
 Requires PHP: 7.4
