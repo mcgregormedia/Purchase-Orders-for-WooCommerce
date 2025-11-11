@@ -126,6 +126,9 @@ This plugin will gather and store a company's name, address and/or email address
 Install as usual by going to Plugins > Add New and searching for Purchase Orders for WooCommerce or download the plugin file and upload to your-site.com/wp-content/plugins.
 
 == Changelog ==
+1.12.2 11-11-2025
+REMOVED: Add/edit PO data in the Add Order/Edit Order screens due to fatal errors
+
 1.12.1 10-11-2025
 ADDED: Conditional so PO data is only displayed/editable if order payment method is PO
 ADDED: Conditional to $order->update_meta_data is only called if order payment method is PO
