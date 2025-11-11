@@ -118,9 +118,6 @@ function pofwc_purchase_order_gateway_init() {
 				// Display meta data
 				add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'pofwc_display_purchase_order_meta' ), 10, 1 );
 				add_action( 'woocommerce_thankyou', array( $this, 'pofwc_add_po_number_to_order_received_page' ), 1 );
-
-				// Save meta data
-				add_action( 'woocommerce_process_shop_order_meta', array( $this, 'pofwc_save_purchase_order_meta' ), 45, 2 );
 				
 				// Other
 				add_filter( 'wc_stripe_validate_checkout_required_fields', array( $this, 'pofwc_stripe_validate_checkout_unset_gateways_required_fields' ) );
