@@ -4,7 +4,7 @@ Tags: WooCommerce, payment gateway, purchase order
 Donate link: https://paypal.me/mcgregormedia
 Requires at least: 4.8
 Tested up to: 6.8
-Stable tag: 1.11.2
+Stable tag: 1.12.2
 Requires PHP: 7.4
 Requires plugin: woocommerce
 WC requires at least: 3.0
