@@ -118,6 +118,10 @@ This code all goes in your functions.php file in your child theme - don't place 
 
 This plugin will gather and store a company's name, address and/or email address. This could also be construed as an individual's personal data. However, as the user has opted to pay by this method, it is suggested that the lawful basis for processing this data is contractual necessity. Processing is necessary in order to send the invoice to the user or user's representative. This data is stored as standard postmeta data and will be retained until the order is permanently deleted (not trashed).
 
+= Roadmap =
+
+The ability to add and edit purchase order data in the Add/Edit Order screen was introduced in version 1.12.0 but due to it causing fatal errors on some users' sites, it was removed in version 1.12.2. It is still in the roadmap to add, as is compatibility with the Gutemnberg checkout block. No timeline exists for this as yet however.
+
 == Screenshots ==
 1. The admin settings for the gateway.
 2. Checkout page on Storefront theme.
